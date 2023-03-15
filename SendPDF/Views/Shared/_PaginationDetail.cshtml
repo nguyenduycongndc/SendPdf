@@ -1,0 +1,113 @@
+﻿<table style="width: 460px; float: right">
+    <caption hidden></caption>
+    <thead style="background:none !important">
+        <tr>
+            <th scope="col" style="width: 85px;text-align: center;font-weight:normal">
+                Hiển thị
+            </th>
+            <th scope="col" style="width: 80px">
+                <select id="cbPageSizeDetail" class="form-control" onchange="onReSearchDetail()">
+                    <option value="5">5</option>
+                    <option value="10" selected="selected">10</option>
+                    <option value="20">20</option>
+                    <option value="30">30</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                    <option value="200">200</option>
+                </select>
+            </th>
+            <th scope="col" style="width: 30px">
+            </th>
+            <th scope="col" style="width: 15px">
+                <button class="btn btn-default" onclick="btnViewPagesDetail(1)" id="btnViewTopPageDetail"><i class="fa fa-fast-backward" aria-hidden="true"></i></button>
+            </th>
+            <th scope="col" style="width: 15px;padding-right: 10px;">
+                <button class="btn btn-default" onclick="btnNextPagesDetail(-1)" id="btnViewPriPageDetail"><i class="fa fa-backward" aria-hidden="true"></i></button>
+            </th>
+            <th scope="col" style="width: 50px">
+                <input class="form-control only-number" id="txtCurrentPageDetail" value="1" onchange="onSearchDetail()" />
+            </th>
+            <th scope="col" style="width: 15px" class="text-center">
+                /
+            </th>
+            <th scope="col" style="width: 25px;font-weight:normal" id="laCountDetail">
+            </th>
+
+            <th scope="col" style="width: 15px">
+                <button class="btn btn-default" onclick="btnNextPagesDetail(1)" id="btnViewNextPageDetail"><i class="fa fa-forward" aria-hidden="true"></i></button>
+            </th>
+            <th scope="col" style="width: 15px">
+                <button class="btn btn-default" onclick="btnViewPagesDetail(maxPagesDetail)" id="btnViewLastPageDetail"><i class="fa fa-fast-forward" aria-hidden="true"></i></button>
+            </th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+</table>
+<script type="text/javascript">
+    var dataListDetail = {};
+    dataListDetail.Total = 0;
+    dataListDetail.Sum = 0;
+    var maxPagesDetail = 1;
+
+    function reCalculatPagesCustomDetail(total) {
+        
+        dataListDetail.Total = total;
+        var size = parseInt($("#cbPageSizeDetail").val());
+        var byBlock = parseInt(dataListDetail.Total / size);
+        var byAdd = dataListDetail.Total % size > 0 ? 1 : 0;
+        maxPagesDetail = byBlock + byAdd;
+        $("#laCountDetail").text(maxPagesDetail);
+        $("#rqSumValueDetail").text(formatNumberByLocate(dataListDetail.Sum));
+    }
+    function reCalculatPagesCustomNullDetail() {
+        document.getElementById("btnViewTopPageDetail").disabled = true;
+        document.getElementById("btnViewPriPageDetail").disabled = true;
+        document.getElementById("btnViewNextPageDetail").disabled = true;
+        document.getElementById("btnViewLastPageDetail").disabled = true;
+    }
+
+    function reCalculatPagesDetail() {
+        var size = parseInt($("#cbPageSizeDetail").val());
+        var byBlock = parseInt(dataListDetail.Total / size);
+        var byAdd = dataListDetail.Total % size > 0 ? 1 : 0;
+        maxPagesDetail = byBlock + byAdd;
+        $("#laCountDetail").text(formatNumberByLocate(maxPagesDetail));
+        $("#rqSumValueDetail").text(formatNumberByLocate(dataListDetail.Sum));
+    }
+
+    function btnNextPagesDetail(isAdd) {
+        
+        var currentPageDetail = parseInt($("#txtCurrentPageDetail").val());
+        currentPageDetail += isAdd;
+        if (currentPageDetail <= 1)
+            currentPageDetail = 1;
+        if (currentPageDetail >= maxPagesDetail)
+            currentPageDetail = maxPagesDetail;
+
+        btnViewPagesDetail(currentPageDetail)
+    }
+    function btnViewPagesDetail(page) {
+        $("#txtCurrentPageDetail").val(page)
+        onSearchDetail();
+    }
+    function onReSearchDetail() {
+        $("#txtCurrentPageDetail").val(1)
+        onSearchDetail();
+    }
+    function viewBtnActionPageDetail() {
+        
+        var currentPageDetail = parseInt($("#txtCurrentPageDetail").val());
+        document.getElementById("btnViewTopPageDetail").disabled = false;
+        document.getElementById("btnViewPriPageDetail").disabled = false;
+        document.getElementById("btnViewNextPageDetail").disabled = false;
+        document.getElementById("btnViewLastPageDetail").disabled = false;
+        if (currentPageDetail == 1) {
+            document.getElementById("btnViewTopPageDetail").disabled = true;
+            document.getElementById("btnViewPriPageDetail").disabled = true;
+        }
+        if (currentPageDetail == maxPagesDetail) {
+            document.getElementById("btnViewNextPageDetail").disabled = true;
+            document.getElementById("btnViewLastPageDetail").disabled = true;
+        }
+    }
+</script>

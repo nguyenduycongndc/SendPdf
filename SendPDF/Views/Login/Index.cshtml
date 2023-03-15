@@ -1,0 +1,296 @@
+﻿@{
+    Layout = "_LayoutLogin";
+}
+<script src="~/js/host.js" type="text/javascript" asp-append-version="true"></script>
+<script src="~/js/api.js" type="text/javascript" asp-append-version="true"></script>
+<script src="~/js/common.js" type="text/javascript" asp-append-version="true"></script>
+<script src="~/js/constant.js" type="text/javascript" asp-append-version="true"></script>
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Basic Page Info -->
+    <meta charset="utf-8">
+    <title>DeskApp - Bootstrap Admin Dashboard HTML Template</title>
+
+    <!-- Site favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="vendors/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="vendors/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="vendors/images/favicon-16x16.png">
+
+    <!-- Mobile Specific Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="vendors/styles/core.css">
+    <link rel="stylesheet" type="text/css" href="vendors/styles/icon-font.min.css">
+    <link rel="stylesheet" type="text/css" href="vendors/styles/style.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-119386393-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-119386393-1');
+    </script>
+</head>
+<body class="login-page">
+    <div class="container-fluid">
+        <div class="row align-items-center">
+            <div class="col-md-6 col-lg-7">
+                <img src="vendors/images/login-page-img.png" alt="">
+            </div>
+            <div class="col-md-6 col-lg-5">
+                <div class="login-box bg-white box-shadow border-radius-10">
+                    <div class="login-title">
+                        <h2 class="text-center text-primary">Login To DeskApp</h2>
+                    </div>
+                    <form id="formLogin" class="form-valide" action="#" method="post" style="margin-top: 20px;">
+                        <div class="select-role">
+                            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                <label class="btn active">
+                                    <input type="radio" name="options" id="admin">
+                                    <div class="icon"><img src="vendors/images/briefcase.svg" class="svg" alt=""></div>
+                                    <span>I'm</span>
+                                    Manager
+                                </label>
+                                <label class="btn">
+                                    <input type="radio" name="options" id="user">
+                                    <div class="icon"><img src="vendors/images/person.svg" class="svg" alt=""></div>
+                                    <span>I'm</span>
+                                    Employee
+                                </label>
+                            </div>
+                        </div>
+                        <div class="input-group custom">
+                            <input id="UserName" type="text" class="form-control required form-control-lg" placeholder="Username">
+                            <div class="input-group-append custom">
+                                <span class="input-group-text"><i class="icon-copy dw dw-user1"></i></span>
+                            </div>
+                        </div>
+                        <div class="input-group custom">
+                            <input id="Password" type="password" class="form-control required form-control-lg" placeholder="**********">
+                            <div class="input-group-append custom">
+                                <span class="input-group-text"><i class="dw dw-padlock1"></i></span>
+                            </div>
+                        </div>
+                        <div class="row pb-30">
+                            <div class="col-6">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck1">
+                                    <label class="custom-control-label" for="customCheck1">Remember</label>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="forgot-password"><a onclick="openModalForgotPassword()">Forgot Password</a></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="input-group mb-0">
+                                    <a class="btn btn-primary btn-lg btn-block" id="btnLogin">Sign In</a>
+                                </div>
+                                <div class="font-16 weight-600 pt-10 pb-10 text-center" data-color="#707373">OR</div>
+                                <div class="input-group mb-0">
+                                    <a class="btn btn-outline-primary btn-lg btn-block" href="register.html">Register To Create Account</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- js -->
+    @*<script src="vendors/scripts/core.js"></script>
+    <script src="vendors/scripts/script.min.js"></script>
+    <script src="vendors/scripts/process.js"></script>
+    <script src="vendors/scripts/layout-settings.js"></script>*@
+</body>
+
+<div id="preloaderlogin" style="display: none; z-index: 1; position: fixed; background-color: rgba(0, 0, 0, 0.5); inset: 0px; ">
+    <div class="loadspin" style="position: absolute; width: 5rem; height: 10rem; top: 50%; margin: 0 auto; left: 0; right: 0; ">
+        <div class="spinner-border" role="status">
+        </div>
+    </div>
+</div>
+<div class="modal hide fade" id="modalForgotPassword" role="dialog" aria-labelledby="modalForgotPasswordLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalForgotPassword">Forgot Password</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="formSendOTP" class="form-valide" action="#" method="post" style="margin-top: 20px;">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label" for="Email">
+                            Email<span class="text-danger">*</span>
+                        </label>
+                        <div class="col-sm-9">
+                            <input type="email" class="form-control required" id="Email" aria-label="ConfirmPassWordNew" aria-describedby="basic-addon1" @*onkeypress='validateSLEdit(event)'*@>
+                        </div>
+                    </div>
+                </form>
+                <form id="formForgotPassword" class="form-valide" action="#" method="post" style="margin-top: 20px;">
+                    <div style="padding: 15px 0px;">
+                        <div class="btnSendOTP">
+                            <a href="javascript:void(0);" onclick="SendOTP()" class="btn btn-info" @* data-toggle="collapse" data-target="#collapseForgotPassword" aria-expanded="true" aria-controls="collapseForgotPassword"*@>
+                                <i class="fa fa-paper-plane" aria-hidden="true">&nbsp;SendOTP</i>
+                            </a>
+                        </div>
+
+                        <div class="collapse" id="collapseForgotPassword" style="margin-top:5px">
+                            <div class="form-group row">
+                                <label for="OTP" class="col-sm-3 col-form-label">OTP<span class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                    <input type="number" class="form-control required" id="OTP" aria-label="OTP" aria-describedby="basic-addon1" @*onkeypress='validateSLEdit(event)'*@>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="NewPassWord" class="col-sm-3 col-form-label">New Password<span class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                    <input type="password" class="form-control required" id="NewPassWord" aria-label="NewPassWord" aria-describedby="basic-addon1" @*onkeypress='validateSLEdit(event)'*@>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label" for="ConfirmPassWord">
+                                    Confirm Password<span class="text-danger">*</span>
+                                </label>
+                                <div class="col-sm-9">
+                                    <input type="password" class="form-control required" id="ConfirmPassWord" aria-label="ConfirmPassWord" aria-describedby="basic-addon1" @*onkeypress='validateSLEdit(event)'*@>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button href="javascript:void(0);" id="submit" class="btn btn-info" onclick="ForgotPassword()">ForgotPassword</button>
+                <button href="javascript:void(0);" class="btn btn-dark" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+</html>
+<script>
+    $("#btnLogin").click(function () {
+        localStorage.clear();
+        sessionStorage.clear();
+        showLoading();
+        SubmitLogin();
+    });
+    function showLoading() {
+        $('#preloaderlogin').css('display', 'block');
+    }
+    function hideLoading() {
+        $('#preloaderlogin').css('display', 'none');
+    }
+    function SubmitLogin() {
+        var formdata;
+        formdata = {
+            'UserName': $('#UserName').val(),
+            'Password': $('#Password').val(),
+        }
+        hideLoading();
+        if (validateRequired('#formLogin')) {
+            $.ajax({
+                url: 'LoginUser',
+                type: 'POST',
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(formdata),
+                success: function (result) {
+                    if (result.code != 200) {
+                        toastr.error(result.message);
+                    } else {
+                        sessionStorage['SessionToken'] = result.token;
+                        //sessionStorage['UserName'] = result.userName;
+                        hideLoading();
+                        window.location.href = "/Home";
+                        //HomeData();
+                    }
+                },
+                error: function (ex) {
+                    hideLoading();
+                    toastr.error(result.message);
+                }
+            });
+        }
+    };
+    $("[data-dismiss=modal]").click(function () {
+        $(".modal").modal('hide');
+    });
+
+    function openModalForgotPassword() {
+        $('#modalForgotPassword').modal('show');
+        $('#collapseForgotPassword').collapse('hide');
+        $('#submit').attr('disabled', 'disabled');
+        clearMsgInvalid();
+        $('#Email').val("");
+        $('#OTP').val("");
+        $('#NewPassWord').val("");
+        $('#ConfirmPassWord').val("");
+        hideLoading();
+    };
+    function SendOTP() {
+        var email = $('#Email').val().trim();
+        if (validateRequired('#formSendOTP')) {
+            showLoading();
+            callApi_userservice(
+                apiConfig.api.login.controller,
+                apiConfig.api.login.action.sendotp.path + "?email=" + email,
+                apiConfig.api.login.action.sendotp.method,
+                null, 'notificationSuccess', 'msgError');
+        }
+    }
+    function notificationSuccess(data) {
+        hideLoading();
+        if (data.data == true) {
+            $('#collapseForgotPassword').collapse('show');
+            $('#submit').removeAttr('disabled');
+            toastr.info("Vui lòng check email");
+        }
+        else {
+            toastr.error("Vui lòng kiểm tra lại email");
+        }
+
+    }
+    function ForgotPassword() {
+        var obj = {
+            'Email': $('#Email').val().trim(),
+            'OTP': $('#OTP').val().trim(),
+            'NewPassWord': $('#NewPassWord').val().trim(),
+            'ConfirmPassWord': $('#ConfirmPassWord').val().trim(),
+        }
+        if (validateRequired('#formForgotPassword')) {
+            showLoading();
+            if ($("#NewPassWord").val().length < 6 || $("#ConfirmPassWord").val().length < 6) {
+                toastr.error("Mật khẩu ít nhất 6 ký tự");
+                return false;
+            } else if ($("#NewPassWord").val() != $("#ConfirmPassWord").val()) {
+                toastr.error("Xác nhận mật khẩu không đúng");
+                return false;
+            }
+            callApi_userservice(
+                apiConfig.api.login.controller,
+                apiConfig.api.login.action.forgotpassword.path,
+                apiConfig.api.login.action.forgotpassword.method,
+                obj, 'changePassWordSuccess', 'msgError');
+        }
+    }
+    function changePassWordSuccess(data) {
+        hideLoading();
+        if (data.data == true) {
+            toastr.success(data.message == 'Ok' ? "Thay đổi mật khẩu thành công" : data.message);
+            $('#modalForgotPassword').modal('hide');
+        }
+        else {
+            toastr.error(data.message);
+        }
+    }
+</script>

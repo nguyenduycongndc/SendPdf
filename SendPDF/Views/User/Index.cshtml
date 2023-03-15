@@ -1,0 +1,324 @@
+﻿@using SendMailPDF.Models
+@{
+    Layout = "_Layout";
+    var currentuser = Context.Items["UserInfo"] as CurrentUserModel;
+}
+<script src="~/js/host.js" type="text/javascript" asp-append-version="true"></script>
+<script src="~/js/api.js" type="text/javascript" asp-append-version="true"></script>
+<script src="~/js/jsApp/usertype.js" type="text/javascript" asp-append-version="true"></script>
+<script src="~/js/common.js" type="text/javascript" asp-append-version="true"></script>
+<script src="~/js/constant.js" type="text/javascript" asp-append-version="true"></script>
+<link href="~/css/tablecus.css" rel="stylesheet" type="text/css" />
+<div class="main-container">
+    <div class="pd-ltr-20">
+        <div class="card" id="view">
+            <div class="card-header bg-primary text-white" style=" font-size: 1rem; ">
+                Quản lý tài khoản
+            </div>
+            <div class="card-body card-custom">
+                <form id="formView" action="javascript:void(0)">
+                    <div style="padding: 15px 0px;">
+                        <a href="javascript:void(0);" onclick="openView(1,0)" class="btn btn-info">Thêm mới</a>
+                    </div>
+                    @*<div class="collapse" id="collapseSearch" style="margin-top:5px">*@
+                    <div class="col-md-12 row">
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group row">
+                                <label class="col-form-label col-lg-2" for="UserName">
+                                    Tên tài khoản
+                                </label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="form-control" id="UserName" name="UserName" @*onchange="nameChange()"*@>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group row">
+                                <label class="col-form-label col-lg-2" for="IsActive">
+                                    Trạng thái
+                                </label>
+                                <div class="col-lg-10">
+                                    <select class="form-control" id="IsActive" @*onchange="IsActiveChange()"*@>
+                                        <option value="-1">Tất cả</option>
+                                        <option value="1">Hoạt động</option>
+                                        <option value="0">Dừng hoạt động</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 mb-3 btn-search-custom">
+                        <div style="text-align:center; ">
+                            <a href="javascript:void(0)" class="btn btn-info" onclick="onSearch()">Tìm kiếm</a>
+                        </div>
+                    </div>
+                    @*</div>*@
+                </form>
+                <div class="table-responsive custom-table-scroll">
+                    <table id="userTypeTable" class="table table-striped table-bordered zero-configuration" style="width: 100%; border: 1px solid #dee2e6 !important">
+                        <thead class="contain-header-custom m-gray">
+                            <tr>
+                                <th class="sorting" style="text-align: center">No</th>
+                                <th class="sorting" style="text-align: center">User Name</th>
+                                <th class="sorting" style="text-align: center">Account Name</th>
+                                <th class="sorting" style="text-align: center">Email</th>
+                                <th class="sorting" style="text-align: center">Status</th>
+                                <th style="text-align: center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="contain-tbody-custom">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row">
+                    <div class="col-md-7"></div>
+                    <div class="col-md-5">
+                        <partial name="_Pagination" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card" id="create" style="display: none">
+            <div class="card-header bg-primary text-white" id="frmHeaderCreate" style=" font-size: 1rem; ">
+                Thêm mới
+            </div>
+            <div class="card-body card-custom">
+                <form id="formCreate" class="form-valide" action="#" method="post" style="margin-top: 20px;">
+                    <input type="hidden" id="Id" name="Id" value="0" />
+                    <div class="row">
+                        <div class="col-md-12 row">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label for="userNameCreate" class="col-form-label">Tên tài khoản<span class="text-danger">*</span></label>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <input type="text" class="form-control required" id="userNameCreate" name="userNameCreate">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label for="roleCreate" class="col-form-label">Quyền</label>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <select class="form-control" id="roleCreate" name="roleCreate">
+                                            <option value="1" selected="selected">Quản trị viên</option>
+                                            <option value="2">Nhân viên</option>
+                                            <option value="3">Người dùng</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 row mb-3 mt-3">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label for="emailCreate" class="col-form-label">Email<span class="text-danger">*</span></label>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <input type="email" class="form-control required" id="emailCreate" name="emailCreate">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label for="passwordCreate" class="col-form-label">Mật khẩu<span class="text-danger">*</span></label>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <input type="password" class="form-control required" id="passwordCreate" name="passwordCreate">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 row" style="display: inline-flex; flex-direction: row; justify-content: end; align-items: flex-start; width: 100%;">
+                            <div style="width: 50%; display: inline-flex; flex-direction: row; justify-content: end; align-items: flex-start;">
+                                <div style="width: 24%; display: inline-flex; flex-direction: row; justify-content: center; align-items: flex-start; padding: 0 5px 0 5px; ">
+                                    <button type="button" class="btn btn-info" style="width: 100%" onclick="submitCreate();">Lưu</button>
+                                </div>
+                                <div style="width: 24%; display: inline-flex; flex-direction: row; justify-content: center; align-items: flex-start; padding: 0 5px 0 5px; ">
+                                    <button type="button" class="btn btn-secondary" style="width: 100%" onclick="openView(0,0)">Trở lại</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="card" id="detail" style="display: none">
+            <div class="card-header bg-primary text-white" id="frmHeaderDetail" style=" font-size: 1rem; ">
+                Chi tiết
+            </div>
+            <div class="card-body card-custom">
+                <form id="formDetail" class="form-valide" action="#" method="post" style="margin-top: 20px;">
+                    <input type="hidden" id="IdDetail" name="IdDetail" value="0" />
+                    <div class="row">
+                        <div class="col-md-12 row mb-3">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label for="userNameDetail" class="col-form-label">Tên tài khoản</label>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <input type="text" class="form-control" id="userNameDetail" name="userNameDetail" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label for="isActiveDetail" class="col-form-label">Trạng thái</label>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <select disabled class="form-control" id="isActiveDetail" name="isActiveDetail">
+                                            <option value="1">Hoạt động</option>
+                                            <option value="0">Dừng hoạt động</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 row mb-3">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label for="NameDetail" class="col-form-label">Tên người dùng</label>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <input type="text" class="form-control" id="NameDetail" name="NameDetail" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label for="roleDetail" class="col-form-label">Quyền</label>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <select disabled class="form-control" id="roleDetail" name="roleDetail">
+                                            <option value="1">Quản trị viên</option>
+                                            <option value="2">Nhân viên</option>
+                                            <option value="3">Người dùng</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 row mb-3">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label for="emailDetail" class="col-form-label">Email</label>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <input type="email" class="form-control" id="emailDetail" name="emailDetail" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 row " style="display: inline-flex; flex-direction: row; justify-content: end; align-items: flex-start; width: 100%;">
+                            <div style="width: 50%; display: inline-flex; flex-direction: row; justify-content: end; align-items: flex-start;">
+                                <div style="width: 24%; display: inline-flex; flex-direction: row; justify-content: center; align-items: flex-start; padding: 0 5px 0 5px; ">
+                                    <button type="button" class="btn btn-secondary" style="width: 100%" onclick="openView(0,0)">Trở lại</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="card" id="edit" style="display: none">
+            <div class="card-header bg-primary text-white" id="frmHeaderEdit" style=" font-size: 1rem; ">
+                Chỉnh sửa
+            </div>
+            <div class="card-body card-custom">
+                <form id="formEdit" class="form-valide" action="#" method="post" style="margin-top: 20px;">
+                    <input type="hidden" id="IdEdit" name="IdEdit" value="0" />
+                    <input type="hidden" id="IdLogin" name="IdLogin" value=@currentuser.Id />
+                    <div class="row">
+                        <div class="col-md-12 row mb-3">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label for="userNameEdit" class="col-form-label">Tên tài khoản</label>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <input type="text" class="form-control" id="userNameEdit" name="userNameEdit" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label for="isActiveEdit" class="col-form-label">Trạng thái</label>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <select disabled class="form-control" id="isActiveEdit" name="isActiveEdit">
+                                            <option value="1">Hoạt động</option>
+                                            <option value="0">Dừng hoạt động</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 row mb-3">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label for="NameEdit" class="col-form-label">Tên người dùng<span class="text-danger">*</span></label>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <input type="text" class="form-control required" id="NameEdit" name="NameEdit">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label for="roleEdit" class="col-form-label">Quyền</label>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <select disabled class="form-control" id="roleEdit" name="roleEdit">
+                                            <option value="1">Quản trị viên</option>
+                                            <option value="2">Nhân viên</option>
+                                            <option value="3">Người dùng</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 row mb-3">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label for="emailEdit" class="col-form-label">Email<span class="text-danger">*</span></label>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <input type="email" class="form-control required" id="emailEdit" name="emailEdit">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 row" style="display: inline-flex; flex-direction: row; justify-content: end; align-items: flex-start; width: 100%;">
+                            <div style="width: 50%; display: inline-flex; flex-direction: row; justify-content: end; align-items: flex-start;">
+                                <div style="width: 24%; display: inline-flex; flex-direction: row; justify-content: center; align-items: flex-start; padding: 0 5px 0 5px; ">
+                                    <button type="button" class="btn btn-info" style="width: 100%" onclick="submitEdit();">Lưu</button>
+                                </div>
+                                <div style="width: 24%; display: inline-flex; flex-direction: row; justify-content: center; align-items: flex-start; padding: 0 5px 0 5px; ">
+                                    <button type="button" class="btn btn-secondary" style="width: 100%" onclick="openView(0,0)">Trở lại</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    onSearch();
+</script>

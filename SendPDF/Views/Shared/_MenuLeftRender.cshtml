@@ -1,0 +1,223 @@
+﻿@using Microsoft.AspNetCore.Http
+@using SendMailPDF.Models
+@{
+    var currentuser = Context.Items["UserInfo"] as CurrentUserModel;
+}
+
+<script src="~/js/host.js" type="text/javascript" asp-append-version="true"></script>
+
+<div class="left-side-bar">
+    <div class="brand-logo">
+        <a href="javascript:void(0);" onclick="home()">
+            <img src="~/vendors/images/deskapp-logo.svg" alt="" class="dark-logo">
+            <img src="~/vendors/images/deskapp-logo-white.svg" alt="" class="light-logo">
+        </a>
+        <div class="close-sidebar" data-toggle="left-sidebar-close">
+            <i class="ion-close-round"></i>
+        </div>
+    </div>
+    <div class="menu-block customscroll">
+        <div class="sidebar-menu">
+            <ul id="accordion-menu">
+                @{
+                    if (@currentuser.RoleId == 1)
+                    {
+                        <li>
+                            <a href="javascript:void(0);" onclick="home()" class="dropdown-toggle no-arrow follow">
+                                <span class="micon dw dw-house-1"></span><span class="mtext">Home</span>
+                            </a>
+                        </li>
+
+                        //<li class="dropdown">
+                        //    <a href="javascript:void(0);" class="dropdown-toggle">
+                        //        <span class="micon dw dw-analytics-21"></span><span class="mtext">Chỉ số</span>
+                        //    </a>
+                        //    <ul class="submenu">
+                        //        <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex()">Revenus</a></li>
+                        //        <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex()">DAU</a></li>
+                        //        <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex()">NRU</a></li>
+                        //        <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex()">ARPD</a></li>
+                        //        <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex()">ARPU</a></li>
+                        //        <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex()">DEVICE</a></li>
+                        //        <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex()">LOCATION</a></li>
+                        //    </ul>
+                        //</li>
+                        //<li class="dropdown">
+                        //    <a href="javascript:void(0);" class="dropdown-toggle">
+                        //        <span class="micon dw dw-gamepad"></span><span class="mtext">Game</span>
+                        //    </a>
+                        //    <ul class="submenu">
+                        //        <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex()">CCU</a></li>
+                        //        <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex(12)">ACCOUNT</a></li>
+                        //    </ul>
+                        //</li>
+                        //<li class="dropdown">
+                        //    <a href="javascript:void(0);" class="dropdown-toggle">
+                        //        <span class="micon dw dw-book"></span><span class="mtext">Kế toán</span>
+                        //    </a>
+                        //    <ul class="submenu">
+                        //        <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex(6)">Market Place</a></li>
+                        //        <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex(7)">Reward wallet</a></li>
+                        //        <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex(8)">Upgrade</a></li>
+                        //        <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex(9)">Evole</a></li>
+                        //        <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex(10)">Breeding</a></li>
+                        //        <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex(11)">Sell Ticket</a></li>
+                        //    </ul>
+                        //</li>
+                        //<li class="dropdown">
+                        //    <a href="javascript:void(0);" class="dropdown-toggle">
+                        //        <span class="micon dw dw-analytics-21"></span><span class="mtext">MM</span>
+                        //    </a>
+                        //    <ul class="submenu">
+                        //        <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex(2)">Quản lý ví</a></li>
+                        //        <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex(3)">Mua</a></li>
+                        //        <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex(4)">Bán</a></li>
+                        //        <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex(5)">Thống kê</a></li>
+                        //    </ul>
+                        //</li>
+                        <li>
+                            <a href="javascript:void(0);" onclick="openViewIndex(1)" class="dropdown-toggle no-arrow follow">
+                                <span class="micon dw dw-user-1"></span><span class="mtext">Quản lý tài khoản</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);" class="dropdown-toggle no-arrow follow" onclick="openViewIndex(2)">
+                                <span class="micon dw dw-email"></span><span class="mtext">Send Mail</span>
+                            </a>
+                        </li>
+                    }
+                    else if (@currentuser.RoleId == 2)
+                    {
+                        <li class="dropdown">
+                            <a href="javascript:void(0);" class="dropdown-toggle">
+                                <span class="micon dw dw-analytics-21"></span><span class="mtext">Chỉ số</span>
+                            </a>
+                            <ul class="submenu">
+                                <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex()">Revenus</a></li>
+                                <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex()">DAU</a></li>
+                                <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex()">NRU</a></li>
+                                <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex()">ARPD</a></li>
+                                <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex()">ARPU</a></li>
+                                <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex()">DEVICE</a></li>
+                                <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex()">LOCATION</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="javascript:void(0);" class="dropdown-toggle">
+                                <span class="micon dw dw-gamepad"></span><span class="mtext">Game</span>
+                            </a>
+                            <ul class="submenu">
+                                <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex()">CCU</a></li>
+                                <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex(12)">ACCOUNT</a></li>
+                            </ul>
+                        </li>
+                    }
+                    else if (@currentuser.RoleId == 3)
+                    {
+                        <li class="dropdown">
+                            <a href="javascript:void(0);" class="dropdown-toggle">
+                                <span class="micon dw dw-analytics-21"></span><span class="mtext">Chỉ số</span>
+                            </a>
+                            <ul class="submenu">
+                                <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex()">NRU</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="javascript:void(0);" class="dropdown-toggle">
+                                <span class="micon dw dw-book"></span><span class="mtext">Kế toán</span>
+                            </a>
+                            <ul class="submenu">
+                                <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex(6)">Giao dịch</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="javascript:void(0);" class="dropdown-toggle">
+                                <span class="micon dw dw-analytics-21"></span><span class="mtext">MM</span>
+                            </a>
+                            <ul class="submenu">
+                                <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex(2)">Quản lý ví</a></li>
+                                <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex(3)">Mua</a></li>
+                                <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex(4)">Bán</a></li>
+                                <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex(5)">Thống kê</a></li>
+                            </ul>
+                        </li>
+                    }
+                    else if (@currentuser.RoleId == 4)
+                    {
+                        <li class="dropdown">
+                            <a href="javascript:void(0);" class="dropdown-toggle">
+                                <span class="micon dw dw-book"></span><span class="mtext">Kế toán</span>
+                            </a>
+                            <ul class="submenu">
+                                <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex(6)">Market Place</a></li>
+                                <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex(7)">Reward wallet</a></li>
+                                <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex(8)">Upgrade</a></li>
+                                <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex(9)">Evole</a></li>
+                                <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex(10)">Breeding</a></li>
+                                <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex(11)">Sell Ticket</a></li>
+                            </ul>
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+<script>
+    //$(document).ready(function () {
+    //    $('.menu-block .sidebar-menu ul li a').click(function (e) {
+
+    //        $('.menu-block .sidebar-menu ul li.active').removeClass('active');
+
+    //        var $parent = $(this).parent();
+    //        $parent.addClass('active');
+    //        e.preventDefault();
+    //    });
+    //});
+    function home() {
+        window.location.href = "/Home";
+    }
+    function openViewIndex(menu) {
+        if (menu === 1) {
+            window.location.href = "/api/User";
+            //$('.menu-block .sidebar-menu ul li a').click(function (e) {
+            //    $('.menu-block .sidebar-menu ul li.active').removeClass('active');
+
+            //    var $parent = $(this).parent();
+            //    $parent.addClass('active');
+            //    e.preventDefault();
+            //});
+
+            //$.ajax({
+            //    method: "GET",
+            //    url: "api/User",
+            //    success: function (result) {
+            //        $("#body-root").html(result);
+            //    }
+            //});
+        } else if (menu === 2) {
+            window.location.href = "/api/SendMail";
+        }
+        //else if (menu === 3) {
+        //    window.location.href = "/api/Buys";
+        //} else if (menu === 4) {
+        //    window.location.href = "/api/Sells";
+        //} else if (menu === 5) {
+        //    window.location.href = "/api/Statistical";
+        //} else if (menu === 6) {
+        //    window.location.href = "/api/Transaction";
+        //} else if (menu === 7) {
+        //    window.location.href = "/api/RewardWallet";
+        //} else if (menu === 8) {
+        //    window.location.href = "/api/Upgrade";
+        //} else if (menu === 9) {
+        //    window.location.href = "/api/Evole";
+        //} else if (menu === 10) {
+        //    window.location.href = "/api/Breeding";
+        //} else if (menu === 11) {
+        //    window.location.href = "/api/SellTicket";
+        //} else if (menu === 12) {
+        //    window.location.href = "/api/Account";
+        //}
+    }
+</script>

@@ -1,0 +1,107 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>@ViewData["Title"] SendPDF</title> <!-- Title layout -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <script src="~/lib/jquery/dist/jquery.min.js" type="text/javascript"></script>
+    <script src="/js/jquery-1.11.0.min.js"></script>
+    @*Alert
+    <script src="/js/jquery-1.11.0.min.js"></script>
+
+    <!-- Basic Page Info -->
+    <!-- Site favicon -->
+    @* Icon *@
+    <link rel="icon" type="image/png" sizes="32x32" href="~/vendors/images/favicon-32x32.png">
+
+    <!-- Mobile Specific Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!-- Google Font -->
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="~/vendors/styles/core.css">
+    <link rel="stylesheet" type="text/css" href="~/vendors/styles/icon-font.min.css">
+    <link rel="stylesheet" type="text/css" href="~/vendors/styles/style.css">
+    <link href="~/src/plugins/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+
+    <script src="~/plugins/toastr/js/toastr.min.js"></script>
+    <link href="~/plugins/toastr/css/toastr.min.css" rel="stylesheet" />
+    <link href="~/plugins/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet" />
+    <script src="~/plugins/sweetalert2/dist/sweetalert2.min.js" asp-append-version="true"></script>
+    <script src="~/src/plugins/bootstrap/popper.min.js" asp-append-version="true"></script>
+</head>
+<body>
+    <script src="~/vendors/scripts/core.js" asp-append-version="true"></script>
+    <script src="~/vendors/scripts/script.min.js" asp-append-version="true"></script>
+    <script src="~/vendors/scripts/process.js" asp-append-version="true"></script>
+    <script src="~/vendors/scripts/layout-settings.js" asp-append-version="true"></script>
+
+    <script src="~/src/plugins/datatables/js/jquery.dataTables.min.js" type="text/javascript" asp-append-version="true"></script>
+    <script src="~/src/plugins/datatables/js/dataTables.bootstrap4.min.js" asp-append-version="true"></script>
+    <script src="~/src/plugins/datatables/js/dataTables.responsive.min.js" asp-append-version="true"></script>
+    <script src="~/src/plugins/datatables/js/responsive.bootstrap4.min.js" asp-append-version="true"></script>
+    <!-- buttons for Export datatable -->
+    <script src="~/src/plugins/datatables/js/dataTables.buttons.min.js" asp-append-version="true"></script>
+    <script src="~/src/plugins/datatables/js/buttons.bootstrap4.min.js" asp-append-version="true"></script>
+    <script src="~/src/plugins/datatables/js/buttons.print.min.js" asp-append-version="true"></script>
+    <script src="~/src/plugins/datatables/js/buttons.html5.min.js" asp-append-version="true"></script>
+    <script src="~/src/plugins/datatables/js/buttons.flash.min.js" asp-append-version="true"></script>
+    @*<script src="~/src/plugins/datatables/js/pdfmake.min.js" asp-append-version="true"></script>*@
+    <script src="~/src/plugins/datatables/js/vfs_fonts.js" asp-append-version="true"></script>
+    <!-- Datatable Setting js -->
+    <script src="~/vendors/scripts/datatable-setting.js" asp-append-version="true"></script>
+    <script src="~/js/api.js" asp-append-version="true"></script>
+    <div id="preloader" style="display: none; z-index: 1; position: fixed; background-color: rgba(0, 0, 0, 0.5); inset: 0px; ">
+        <div class="loadspin" style="position: absolute; width: 5rem; height: 10rem; top: 50%; margin: 0 auto; left: 0; right: 0; ">
+            <div class="spinner-border" role="status">
+            </div>
+        </div>
+    </div>
+    <div class="header" style="z-index:10">
+        @{
+            await Html.RenderPartialAsync("_TopNavigation.cshtml");
+        }
+    </div>
+    <!-- Menu Left-->
+    <div class="sidebar-light">
+        @{
+            await Html.RenderPartialAsync("_MenuLeftRender.cshtml");
+        }
+    </div>
+    <div class="header-white" id="body-root">
+        @RenderBody()
+    </div>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/jsApp/api.construct.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+    <script src="~/js/custom.min.js" asp-append-version="true"></script>
+</body>
+</html>
+
+<script>
+    $(".modal").on("shown.bs.modal", function () {
+        if ($(".modal-backdrop.fade.show").length >= 0) {
+            $(".modal-backdrop.fade.show").remove();
+        }
+    })
+    function getSessionToken() {
+        if (sessionStorage['SessionToken'] != undefined)
+            return sessionStorage['SessionToken'];
+        return null;
+    }
+
+    function logout() {
+        $.ajax({
+            method: "GET",
+            url: "/Logout",
+            success: function (result) {
+                sessionStorage.clear();
+                localStorage.clear();
+                window.location.href = "/Login";
+            }
+        });
+    }
+
+</script>

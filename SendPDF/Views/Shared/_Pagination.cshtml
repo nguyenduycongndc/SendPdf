@@ -1,0 +1,111 @@
+﻿<table style="width: 460px; float: right">
+    <caption hidden></caption>
+    <thead style="background:none !important">
+        <tr>
+            <th scope="col" style="width: 85px;text-align: center;font-weight:normal">
+                Hiển thị
+            </th>
+            <th scope="col" style="width: 80px">
+                <select id="cbPageSize" class="form-control" onchange="onReSearch()">
+                    <option value="5">5</option>
+                    <option value="10" selected="selected">10</option>
+                    <option value="20">20</option>
+                    <option value="30">30</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                    <option value="200">200</option>
+                </select>
+            </th>
+            <th scope="col" style="width: 30px">
+            </th>
+            <th scope="col" style="width: 15px">
+                <button class="btn btn-default" onclick="btnViewPages(1)" id="btnViewTopPage"><i class="fa fa-fast-backward" aria-hidden="true"></i></button>
+            </th>
+            <th scope="col" style="width: 15px;padding-right: 10px;">
+                <button class="btn btn-default" onclick="btnNextPages(-1)" id="btnViewPriPage"><i class="fa fa-backward" aria-hidden="true"></i></button>
+            </th>
+            <th scope="col" style="width: 50px">
+                <input class="form-control only-number" id="txtCurrentPage" value="1" onchange="onSearch()" />
+            </th>
+            <th scope="col" style="width: 15px" class="text-center">
+                /
+            </th>
+            <th scope="col" style="width: 25px;font-weight:normal" id="laCount">
+            </th>
+
+            <th scope="col" style="width: 15px">
+                <button class="btn btn-default" onclick="btnNextPages(1)" id="btnViewNextPage"><i class="fa fa-forward" aria-hidden="true"></i></button>
+            </th>
+            <th scope="col" style="width: 15px">
+                <button class="btn btn-default" onclick="btnViewPages(maxPages)" id="btnViewLastPage"><i class="fa fa-fast-forward" aria-hidden="true"></i></button>
+            </th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+</table>
+<script type="text/javascript">
+    var dataList = {};
+    dataList.Total = 0;
+    dataList.Sum = 0;
+    var maxPages = 1;
+
+    function reCalculatPagesCustom(total) {
+        dataList.Total = total;
+        var size = parseInt($("#cbPageSize").val());
+        var byBlock = parseInt(dataList.Total / size);
+        var byAdd = dataList.Total % size > 0 ? 1 : 0;
+        maxPages = byBlock + byAdd;
+        $("#laCount").text(maxPages);
+        $("#rqSumValue").text(formatNumberByLocate(dataList.Sum));
+    }
+    function reCalculatPagesCustomNull() {
+        $("#laCount").text(1)
+        document.getElementById("btnViewTopPage").disabled = true;
+        document.getElementById("btnViewPriPage").disabled = true;
+        document.getElementById("btnViewNextPage").disabled = true;
+        document.getElementById("btnViewLastPage").disabled = true;
+    }
+
+    function reCalculatPages() {
+        var size = parseInt($("#cbPageSize").val());
+        var byBlock = parseInt(dataList.Total / size);
+        var byAdd = dataList.Total % size > 0 ? 1 : 0;
+        maxPages = byBlock + byAdd;
+        $("#laCount").text(formatNumberByLocate(maxPages));
+        $("#rqSumValue").text(formatNumberByLocate(dataList.Sum));
+    }
+
+    function btnNextPages(isAdd) {
+        var currentPage = parseInt($("#txtCurrentPage").val());
+        currentPage += isAdd;
+        if (currentPage <= 1)
+            currentPage = 1;
+        if (currentPage >= maxPages)
+            currentPage = maxPages;
+
+        btnViewPages(currentPage)
+    }
+    function btnViewPages(page) {
+        $("#txtCurrentPage").val(page)
+        onSearch();
+    }
+    function onReSearch() {
+        $("#txtCurrentPage").val(1)
+        onSearch();
+    }
+    function viewBtnActionPage() {
+        var currentPage = parseInt($("#txtCurrentPage").val());
+        document.getElementById("btnViewTopPage").disabled = false;
+        document.getElementById("btnViewPriPage").disabled = false;
+        document.getElementById("btnViewNextPage").disabled = false;
+        document.getElementById("btnViewLastPage").disabled = false;
+        if (currentPage == 1) {
+            document.getElementById("btnViewTopPage").disabled = true;
+            document.getElementById("btnViewPriPage").disabled = true;
+        }
+        if (currentPage == maxPages) {
+            document.getElementById("btnViewNextPage").disabled = true;
+            document.getElementById("btnViewLastPage").disabled = true;
+        }
+    }
+</script>

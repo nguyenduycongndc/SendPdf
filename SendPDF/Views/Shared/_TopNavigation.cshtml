@@ -1,0 +1,139 @@
+﻿@using SendMailPDF.Models
+@{
+    var currentuser = Context.Items["UserInfo"] as CurrentUserModel;
+}
+<script src="~/js/host.js" type="text/javascript" asp-append-version="true"></script>
+<script src="~/js/api.js" type="text/javascript" asp-append-version="true"></script>
+@*<script src="~/js/jsApp/usertype.js" type="text/javascript" asp-append-version="true"></script>*@
+<script src="~/js/common.js" type="text/javascript" asp-append-version="true"></script>
+<script src="~/js/constant.js" type="text/javascript" asp-append-version="true"></script>
+
+<div class="header">
+    <div class="header-left">
+        <div class="menu-icon dw dw-menu"></div>
+    </div>
+    <div class="header-right">
+        <div class="user-info-dropdown">
+            <div class="dropdown">
+                <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+                    <span class="user-icon">
+                        <img src="~/vendors/images/user.png" alt="" />
+                    </span>
+                    <span class="user-name">@currentuser.FullName</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+                    <a class="dropdown-item" href="javascript:void(0)" onclick="openModal()"><i class="fa fa-pencil-square"></i>Thay đổi mật khẩu</a>
+                    <a class="dropdown-item" href="javascript:void(0)" onclick="logout()"><i class="dw dw-logout"></i>Thoát</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal hide fade" id="modalChangePassWord" role="dialog" aria-labelledby="modalChangePassWordLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalChangePassWord">Thay đổi mật khẩu</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="formChangePassWord" class="form-valide" action="#" method="post" style="margin-top: 20px;">
+                    <input type="hidden" id="Id" name="Id" value="0" />
+                    <div class="form-group row">
+                        <label for="UserName" class="col-sm-3 col-form-label">Tài khoản</label>
+                        <label for="UserName" class="col-sm-9 col-form-label">@currentuser.FullName</label>
+                    </div>
+                    <div class="form-group row">
+                        <label for="PassWordOld" class="col-sm-3 col-form-label">Mật khẩu cũ<span class="text-danger">*</span></label>
+                        <div class="col-sm-9">
+                            <input type="password" class="form-control required" id="PassWordOld" aria-label="PassWordOld" aria-describedby="basic-addon1">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="PassWordNew" class="col-sm-3 col-form-label">Mật khẩu mới<span class="text-danger">*</span></label>
+                        <div class="col-sm-9">
+                            <input type="password" class="form-control required" id="PassWordNew" aria-label="PassWordNew" aria-describedby="basic-addon1" onkeypress='validateSLEdit(event)'>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label" for="ConfirmPassWordNew">
+                            Xác nhận mật khẩu<span class="text-danger">*</span>
+                        </label>
+                        <div class="col-sm-9">
+                            <input type="password" class="form-control required" id="ConfirmPassWordNew" aria-label="ConfirmPassWordNew" aria-describedby="basic-addon1" onkeypress='validateSLEdit(event)'>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0);" class="btn btn-info" onclick="SaveClick(@currentuser.Id)">Lưu</a>
+                <a href="javascript:void(0);" class="btn btn-secondary" data-dismiss="modal">Trở lại</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(".modal").on("shown.bs.modal", function () {
+        if ($(".modal-backdrop").length > 1) {
+            $(".modal-backdrop").remove();
+        }
+    })
+    function validateSLEdit(evt) {
+        var theEvent = evt || window.event;
+
+        // Handle paste
+        if (theEvent.type === 'paste') {
+            key = event.clipboardData.getData('text/plain');
+        } else {
+            // Handle key press
+            var key = theEvent.keyCode || theEvent.which;
+            key = String.fromCharCode(key);
+        }
+        //var regex = /[0-9]\./;
+        var regex = /^[a-z0-9]+$/;
+        if (!regex.test(key)) {
+            theEvent.returnValue = false;
+            if (theEvent.preventDefault) theEvent.preventDefault();
+        }
+    }
+    function SaveClick() {
+        var obj = {
+            'Id': @currentuser.Id,
+            'PassWordOld': $('#PassWordOld').val().trim(),
+            'PassWordNew': $('#PassWordNew').val().trim(),
+            'ConfirmPassWordNew': $('#ConfirmPassWordNew').val().trim(),
+        }
+        if (validateRequired('#formChangePassWord')) {
+            if ($("#PassWordNew").val().length < 6 || $("#ConfirmPassWordNew").val().length < 6) {
+                toastr.error("Mật khẩu ít nhất 6 ký tự");
+                return false;
+            } else if ($("#PassWordNew").val() != $("#ConfirmPassWordNew").val()) {
+                toastr.error("Xác nhận mật khẩu không đúng");
+                return false;
+            }
+            callApi_userservice(
+                apiConfig.api.user.controller,
+                apiConfig.api.user.action.changepassword.path,
+                apiConfig.api.user.action.changepassword.method,
+                obj, 'changePassWordSuccess', 'msgError');
+        }
+    }
+
+    function changePassWordSuccess(data) {
+        if (data != false) {
+            toastr.success("Thay đổi mật khẩu thành công");
+            $('#modalChangePassWord').modal('hide');
+        }
+        else {
+            toastr.error("Thay đổi mật khẩu thất bại");
+        }
+    }
+    function openModal() {
+        $('#modalChangePassWord').modal('show');
+        clearMsgInvalid();
+        $('#PrivateKey').val("");
+        $('#AddressWallet').val("");
+    }
+</script>
