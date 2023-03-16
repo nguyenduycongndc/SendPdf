@@ -32,13 +32,16 @@ namespace SendMailPDF.Controllers
         public const string CONTEN_FOLDER_NAME_EMAIL = "FileExcelEmail.xlsx";
         public readonly string _contentFolder;
         public const string CONTEN_FOLDER_NAME = "UploadFile";
+        public readonly string _contentSampleFile;
+        public const string SAMPLE_FILE = "SampleFile";
         public SendMailController(ILogger<SendMailController> logger, ISendMailService sendMailService, IConfiguration config, IWebHostEnvironment webHostEnvironment, IEmailRepo emailRepo)
         {
             _logger = logger;
             _sendMailService = sendMailService;
             _config = config;
-            _contentFolderEmailSample = Path.Combine(webHostEnvironment.WebRootPath, CONTEN_FOLDER_NAME_EMAIL_SAMPLE);
-            _contentFolderEmail = Path.Combine(webHostEnvironment.WebRootPath, CONTEN_FOLDER_NAME_EMAIL);
+            _contentSampleFile = Path.Combine(webHostEnvironment.WebRootPath, SAMPLE_FILE);
+            _contentFolderEmailSample = Path.Combine(_contentSampleFile, CONTEN_FOLDER_NAME_EMAIL_SAMPLE);
+            _contentFolderEmail = Path.Combine(_contentSampleFile, CONTEN_FOLDER_NAME_EMAIL);
             _contentFolder = Path.Combine(webHostEnvironment.WebRootPath, CONTEN_FOLDER_NAME);
             _emailRepo = emailRepo;
         }
@@ -346,7 +349,7 @@ namespace SendMailPDF.Controllers
                 }
                 int faild = 0;
                 int success = 0;
-                bool checkdtrs= false;
+                bool checkdtrs = false;
                 string mess = string.Empty;
                 for (int i = 0; i < checkStatusT.Count; i++)
                 {
@@ -354,7 +357,8 @@ namespace SendMailPDF.Controllers
                     success = checkStatusT[i].Data != null ? success += 1 : success;
                     mess = $"Email faild: {faild}, Email success: {success}";
                 }
-                if(success > 0) {
+                if (success > 0)
+                {
                     dataRs = new ResultImportModel()
                     {
                         Message = mess,

@@ -27,54 +27,6 @@
                                 <span class="micon dw dw-house-1"></span><span class="mtext">Home</span>
                             </a>
                         </li>
-
-                        //<li class="dropdown">
-                        //    <a href="javascript:void(0);" class="dropdown-toggle">
-                        //        <span class="micon dw dw-analytics-21"></span><span class="mtext">Chỉ số</span>
-                        //    </a>
-                        //    <ul class="submenu">
-                        //        <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex()">Revenus</a></li>
-                        //        <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex()">DAU</a></li>
-                        //        <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex()">NRU</a></li>
-                        //        <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex()">ARPD</a></li>
-                        //        <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex()">ARPU</a></li>
-                        //        <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex()">DEVICE</a></li>
-                        //        <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex()">LOCATION</a></li>
-                        //    </ul>
-                        //</li>
-                        //<li class="dropdown">
-                        //    <a href="javascript:void(0);" class="dropdown-toggle">
-                        //        <span class="micon dw dw-gamepad"></span><span class="mtext">Game</span>
-                        //    </a>
-                        //    <ul class="submenu">
-                        //        <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex()">CCU</a></li>
-                        //        <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex(12)">ACCOUNT</a></li>
-                        //    </ul>
-                        //</li>
-                        //<li class="dropdown">
-                        //    <a href="javascript:void(0);" class="dropdown-toggle">
-                        //        <span class="micon dw dw-book"></span><span class="mtext">Kế toán</span>
-                        //    </a>
-                        //    <ul class="submenu">
-                        //        <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex(6)">Market Place</a></li>
-                        //        <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex(7)">Reward wallet</a></li>
-                        //        <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex(8)">Upgrade</a></li>
-                        //        <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex(9)">Evole</a></li>
-                        //        <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex(10)">Breeding</a></li>
-                        //        <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex(11)">Sell Ticket</a></li>
-                        //    </ul>
-                        //</li>
-                        //<li class="dropdown">
-                        //    <a href="javascript:void(0);" class="dropdown-toggle">
-                        //        <span class="micon dw dw-analytics-21"></span><span class="mtext">MM</span>
-                        //    </a>
-                        //    <ul class="submenu">
-                        //        <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex(2)">Quản lý ví</a></li>
-                        //        <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex(3)">Mua</a></li>
-                        //        <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex(4)">Bán</a></li>
-                        //        <li><a href="javascript:void(0);" class="follow" onclick="openViewIndex(5)">Thống kê</a></li>
-                        //    </ul>
-                        //</li>
                         <li>
                             <a href="javascript:void(0);" onclick="openViewIndex(1)" class="dropdown-toggle no-arrow follow">
                                 <span class="micon dw dw-user-1"></span><span class="mtext">Quản lý tài khoản</span>
@@ -83,6 +35,11 @@
                         <li>
                             <a href="javascript:void(0);" class="dropdown-toggle no-arrow follow" onclick="openViewIndex(2)">
                                 <span class="micon dw dw-email"></span><span class="mtext">Send Mail</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);" class="dropdown-toggle no-arrow follow" onclick="openViewIndex(3)">
+                                <span class="micon dw dw-email"></span><span class="mtext">Send Pdf</span>
                             </a>
                         </li>
                     }
@@ -197,6 +154,8 @@
             //});
         } else if (menu === 2) {
             window.location.href = "/api/SendMail";
+        } else if (menu === 3) {
+            window.location.href = "/api/SendMailPDF";
         }
         //else if (menu === 3) {
         //    window.location.href = "/api/Buys";

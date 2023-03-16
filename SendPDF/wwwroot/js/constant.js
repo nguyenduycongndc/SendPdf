@@ -153,6 +153,19 @@ var apiConfig = {
                 },
             }
         },
+        "sendfilepdf": {
+            "controller": "/api/SendMailPDF",
+            "action": {
+                "sendpdf": {
+                    "method": "POST",
+                    "path": "/SendFilePDF"
+                },
+                "importexcelpdf": {
+                    "method": "POST",
+                    "path": "/ImportExcelPDF"
+                }
+            }
+        },
     },
 };
 

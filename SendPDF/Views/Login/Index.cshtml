@@ -184,6 +184,13 @@
         showLoading();
         SubmitLogin();
     });
+    document.addEventListener('keypress', function (event) {
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if (keycode === 13) {
+            event.preventDefault();
+            document.getElementById('btnLogin').click();
+        }
+    });
     function showLoading() {
         $('#preloaderlogin').css('display', 'block');
     }

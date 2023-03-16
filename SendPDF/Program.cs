@@ -14,6 +14,8 @@ builder.Services.AddScoped<ILoginService, LoginService>();
 builder.Services.AddScoped<ISendMailService, SendMailService>();
 builder.Services.AddScoped<IDataEmailRepo, DataEmailRepo>();
 builder.Services.AddScoped<IEmailRepo, EmailRepo>();
+builder.Services.AddScoped<ISendPdfService, SendPdfService>();
+
 
 // Add services to the container.
 builder.Services.AddControllers();
