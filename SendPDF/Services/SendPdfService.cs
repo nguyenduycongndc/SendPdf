@@ -12,58 +12,59 @@ namespace SendMailPDF.Services
     public class SendPdfService: ISendPdfService
     {
         private readonly ILogger<SendPdfService> _logger;
-        private readonly IConfiguration _configuration;
-        private ResultModel Result;
+        private readonly IConfiguration _configuration; 
+        private static List<DataFilePDF> DtPdf;
         public SendPdfService(IConfiguration configuration, ILogger<SendPdfService> logger)
         {
             _logger = logger;
             _configuration = configuration;
+        }
+        public Task<bool> ImportPDF(List<DataFilePDF> dataFilePDF)
+        {
+            try
+            {
+                DtPdf = dataFilePDF;
+                return Task.FromResult(true);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
         #region Send Mail
         public Task<bool> SendMailPDFAsync(DataSendMailPDF dataSendMailPDF)
         {
             try
             {
-                var listEmail = dataSendMailPDF.Data;
+                List<DataFilePDF> listEmail = new List<DataFilePDF>();
+                listEmail = (List<DataFilePDF>)(dataSendMailPDF.Data = DtPdf);
+
+                #region File PDF
+
+                #endregion
+                #region SendEmail
                 var smtpClient = new SmtpClient(_configuration.GetSection("EmailHost").Value)
                 {
                     Port = 587,
                     Credentials = new NetworkCredential(_configuration.GetSection("EmailUsername").Value, _configuration.GetSection("EmailPassword").Value),
                     EnableSsl = true,
                 };
-                //if (listEmail.Length > 1)
-                //{
-                //    for (int i = 0; i < listEmail.Length; i++)
-                //    {
-                //        var AddressEmailTo = listEmail[i].Split(";");
-                //        MailMessage mailMessage = new MailMessage();
-                //        mailMessage.Subject = dataSendMailPDF.Subject;
-                //        mailMessage.Body = dataSendMailPDF.Body;
-                //        mailMessage.From = new MailAddress(_configuration.GetSection("EmailUsername").Value);
-                //        mailMessage.To.Add(new MailAddress(AddressEmailTo[0]));
-                //        if (AddressEmailTo[1] != "")
-                //        {
-                //            mailMessage.CC.Add(new MailAddress(AddressEmailTo[1]));
-                //        }
-                //        mailMessage.IsBodyHtml = true;
-                //        smtpClient.Send(mailMessage);
-                //    }
-                //}
-                //else
-                //{
-                //    var AddressEmailTo = dataSendMailPDF.To.Split(";");
-                //    MailMessage mailMessage = new MailMessage();
-                //    mailMessage.Subject = dataSendMailPDF.Subject;
-                //    mailMessage.Body = dataSendMailPDF.Body;
-                //    mailMessage.From = new MailAddress(_configuration.GetSection("EmailUsername").Value);
-                //    mailMessage.To.Add(new MailAddress(AddressEmailTo[0]));
-                //    if (AddressEmailTo[1] != "")
-                //    {
-                //        mailMessage.CC.Add(new MailAddress(AddressEmailTo[1]));
-                //    }
-                //    mailMessage.IsBodyHtml = true;
-                //    smtpClient.Send(mailMessage);
-                //}
+                if (listEmail.Count > 1)
+                {
+                    for (int i = 0; i < listEmail.Count; i++)
+                    {
+                        var AddressEmailTo = listEmail[i].EmailAddress;
+                        MailMessage mailMessage = new MailMessage();
+                        mailMessage.Subject = dataSendMailPDF.Subject;
+                        mailMessage.Body = dataSendMailPDF.Body;
+                        mailMessage.From = new MailAddress(_configuration.GetSection("EmailUsername").Value);
+                        mailMessage.To.Add(new MailAddress(AddressEmailTo));
+                        mailMessage.IsBodyHtml = true;
+                        smtpClient.Send(mailMessage);
+                    }
+                }
+                #endregion
                 return Task.FromResult(true);
             }
             catch (Exception)

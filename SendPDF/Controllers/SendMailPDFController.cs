@@ -2,9 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SendMailPDF.Attributes;
 using SendMailPDF.Common;
-using SendMailPDF.Data;
 using SendMailPDF.Models;
-using SendMailPDF.Services;
 using SendMailPDF.Services.Interface;
 
 namespace SendMailPDF.Controllers
@@ -19,7 +17,7 @@ namespace SendMailPDF.Controllers
         private readonly ISendPdfService _sendPdfService;
         public readonly string _contentFolder;
         public const string CONTEN_FOLDER_NAME = "UploadFile";
-        List<DataFilePDF> dataFilePDF = new List<DataFilePDF>();
+        public static List<DataFilePDF> dataFilePDF = new List<DataFilePDF>();
         public SendMailPDFController(ILogger<SendMailPDFController> logger, IConfiguration config, IWebHostEnvironment webHostEnvironment, ISendPdfService sendPdfService)
         {
             _logger = logger;
@@ -54,6 +52,7 @@ namespace SendMailPDF.Controllers
                 var rows = sheets.Rows().ToList();
                 var checkStatusT = new List<ResultModel>();
                 var dataRs = new ResultImportModel();
+                dataFilePDF.Clear();
                 foreach (var row in rows)
                 {
                     if (rowno > 1)
@@ -104,21 +103,12 @@ namespace SendMailPDF.Controllers
                         rowno++;
                     }
                 }
-                int faild = 0;
-                int success = 0;
-                bool checkdtrs = false;
-                string mess = string.Empty;
-                for (int i = 0; i < checkStatusT.Count; i++)
-                {
-                    faild = checkStatusT[i].Data == null ? faild += 1 : faild;
-                    success = checkStatusT[i].Data != null ? success += 1 : success;
-                    mess = $"Email faild: {faild}, Email success: {success}";
-                }
-                if (success > 0)
+                var success = await _sendPdfService.ImportPDF(dataFilePDF);
+                if (success)
                 {
                     dataRs = new ResultImportModel()
                     {
-                        Message = mess,
+                        Message = "Success",
                         Code = 200,
                         Data = true,
                         Count = checkStatusT.Count,
@@ -128,7 +118,7 @@ namespace SendMailPDF.Controllers
                 {
                     dataRs = new ResultImportModel()
                     {
-                        Message = mess,
+                        Message = "Falid",
                         Code = 400,
                         Data = false,
                         Count = checkStatusT.Count,
@@ -147,7 +137,6 @@ namespace SendMailPDF.Controllers
         {
             try
             {
-                dataSendMailPDF.Data = dataFilePDF;
                 var sendMailRs = await _sendPdfService.SendMailPDFAsync(dataSendMailPDF);
                 if (sendMailRs == true)
                 {

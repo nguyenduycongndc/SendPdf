@@ -16,6 +16,15 @@
     }
 }
 
+function viewDataUpload(rspn) {
+    if (rspn.data === true) {
+        toastr.success(rspn.message);
+    }
+    else {
+        toastr.error(rspn.message);
+    }
+}
+
 function SendEmailPDF() //send mail
 {
     var obj = {
@@ -28,7 +37,16 @@ function SendEmailPDF() //send mail
             apiConfig.api.sendfilepdf.controller,
             apiConfig.api.sendfilepdf.action.sendpdf.path,
             apiConfig.api.sendfilepdf.action.sendpdf.method,
-            obj, 'SendEmailSuccess', 'msgError');
+            obj, 'SendEmailPDFSuccess', 'msgError');
+    }
+}
+
+function SendEmailPDFSuccess(rspn) {
+    if (rspn.data === true) {
+        toastr.success(rspn.message);
+    }
+    else {
+        toastr.error(rspn.message);
     }
 }
 //function SaveDataEmailPDF() {
