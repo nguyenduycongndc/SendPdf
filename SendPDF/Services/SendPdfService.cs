@@ -14,6 +14,7 @@ using Spire.Pdf.Graphics;
 using Spire.Pdf.Tables;
 using System.Drawing;
 using System.Data;
+using DocumentFormat.OpenXml.Bibliography;
 
 namespace SendMailPDF.Services
 {
@@ -70,8 +71,22 @@ namespace SendMailPDF.Services
                 List<DataFilePDF> listDataPDF = new List<DataFilePDF>();
                 listDataPDF = (List<DataFilePDF>)(dataSendMailPDF.Data = DtPdf);
                 byte[] filePDFs;
-
-
+                //var month = DateTime.Now.ToString("MM");
+                //var year = DateTime.Now.ToString("yyyy");
+                var month = DateTime.Now.Month;
+                var year = DateTime.Now.Year;
+                var monthPC = 0;
+                var yearPC = 0;
+                if (month == 1)
+                {
+                    monthPC = 12;
+                    yearPC = year - 1;
+                }
+                else
+                {
+                    monthPC = month - 1;
+                    yearPC = year;
+                }
                 #region SendEmail
                 var smtpClient = new SmtpClient(_configuration.GetSection("EmailHost").Value)
                 {
@@ -91,25 +106,70 @@ namespace SendMailPDF.Services
 
                         PdfPageBase page = doc.Pages.Add(PdfPageSize.A4, new PdfMargins(40));
 
+                        PdfFont font = new PdfFont(PdfFontFamily.Helvetica, 20f);
+                        PdfSolidBrush brush = new PdfSolidBrush(Color.Blue);
+                        PdfStringFormat leftAlignment = new PdfStringFormat(PdfTextAlignment.Left, PdfVerticalAlignment.Middle);
+                        page.Canvas.DrawString("Thông báo các khoản thu nhập chịu thuế tháng!" + month + "/" + year, font, brush, 0, 20, leftAlignment);
+
                         //Create a PdfTable object
                         PdfTable table = new PdfTable();
                         //Set font for header and the rest cells
                         table.Style.DefaultStyle.Font = new PdfTrueTypeFont(new Font("Times New Roman", 12f, FontStyle.Regular), true);
                         table.Style.HeaderStyle.Font = new PdfTrueTypeFont(new Font("Times New Roman", 12f, FontStyle.Bold), true);
-
                         //Crate a DataTable
                         DataTable dataTable = new DataTable();
-                        dataTable.Columns.Add("ID");
-                        dataTable.Columns.Add("Name");
-                        dataTable.Columns.Add("Department");
-                        dataTable.Columns.Add("Position");
-                        dataTable.Columns.Add("Level");
-                        dataTable.Rows.Add(new string[] { "1", "David", "IT", "Manager", "1" });
-                        dataTable.Rows.Add(new string[] { "3", "Julia", "HR", "Manager", "1" });
-                        dataTable.Rows.Add(new string[] { "4", "Sophie", "Marketing", "Manager", "1" });
-                        dataTable.Rows.Add(new string[] { "7", "Wickey", "Marketing", "Sales Rep", "2" });
-                        dataTable.Rows.Add(new string[] { "9", "Wayne", "HR", "HR Supervisor", "2" });
-                        dataTable.Rows.Add(new string[] { "11", "Mia", "Dev", "Developer", "2" });
+                        dataTable.Columns.Add("Mục");
+                        dataTable.Columns.Add("Nội dung");
+                        dataTable.Columns.Add("Giá trị (vnđ)");
+                        dataTable.Rows.Add(new string[] { "1", "Lương và các khoản phụ cấp T" + monthPC + "/" + yearPC, (listDataPDF[i].allowance == "" || listDataPDF[i].allowance == "0") ? "" : string.Format("{0:n0}", listDataPDF[i].allowance) });
+                        dataTable.Rows.Add(new string[] { "2", "TNTT T" + monthPC + "/" + yearPC, (listDataPDF[i].TNTT == "" || listDataPDF[i].TNTT == "0") ? "" : string.Format("{0:n0}", listDataPDF[i].TNTT) });
+
+                        dataTable.Rows.Add(new string[] { "3", "NCLĐ T" + monthPC + "/" + yearPC, (listDataPDF[i].NCLD == "" || listDataPDF[i].NCLD == "0") ? "" : string.Format("{0:n0}", listDataPDF[i].NCLD) });
+
+                        dataTable.Rows.Add(new string[] { "4", "Hội nghị VC ", (listDataPDF[i].ConferenceVC == "" || listDataPDF[i].ConferenceVC == "0") ? "" : string.Format("{0:n0}", listDataPDF[i].ConferenceVC) });
+
+                        dataTable.Rows.Add(new string[] { "5", "Tết nguyên đán" + yearPC, (listDataPDF[i].TND == "" || listDataPDF[i].TND == "0") ? "" : string.Format("{0:n0}", listDataPDF[i].TND) });
+
+                        dataTable.Rows.Add(new string[] { "6", "Gặp mặt đầu xuân 27/01 ", (listDataPDF[i].GMDX == "" || listDataPDF[i].GMDX == "0") ? "" : string.Format("{0:n0}", listDataPDF[i].GMDX) });
+
+                        dataTable.Rows.Add(new string[] { "7", "Chi bổ sung thu nhập năm " + yearPC, (listDataPDF[i].AdditionalExpenses == "" || listDataPDF[i].AdditionalExpenses == "0") ? "" : string.Format("{0:n0}", listDataPDF[i].AdditionalExpenses) });
+
+                        dataTable.Rows.Add(new string[] { "8", "Thu hồi bổ sung TN năm " + yearPC, (listDataPDF[i].AdditionalRecall == "" || listDataPDF[i].AdditionalRecall == "0") ? "" : string.Format("{0:n0}", listDataPDF[i].AdditionalRecall) });
+
+                        dataTable.Rows.Add(new string[] { "9", "DV khám chọn, khám yêu cầu T" + monthPC + "/" + yearPC, (listDataPDF[i].ServiceExamination == "" || listDataPDF[i].ServiceExamination == "0") ? "" : string.Format("{0:n0}", listDataPDF[i].ServiceExamination) });
+
+                        dataTable.Rows.Add(new string[] { "10", "Trích nhà thuốc ", (listDataPDF[i].TNT == "" || listDataPDF[i].TNT == "0") ? "" : string.Format("{0:n0}", listDataPDF[i].TNT) });
+
+                        dataTable.Rows.Add(new string[] { "11", "Tiền giảng viên lớp tập huấn ", (listDataPDF[i].TrainingClassTeacherMoney == "" || listDataPDF[i].TrainingClassTeacherMoney == "0") ? "" : string.Format("{0:n0}", listDataPDF[i].TrainingClassTeacherMoney) });
+
+                        dataTable.Rows.Add(new string[] { "12", "Tiền thứ 7 tháng " + monthPC + "/" + yearPC, (listDataPDF[i].MoneySAT == "" || listDataPDF[i].MoneySAT == "0") ? "" : string.Format("{0:n0}", listDataPDF[i].MoneySAT) });
+
+                        dataTable.Rows.Add(new string[] { "13", "Tiền chủ nhật tháng " + monthPC + "/" + yearPC, (listDataPDF[i].MoneySUN == "" || listDataPDF[i].MoneySUN == "0") ? "" : string.Format("{0:n0}", listDataPDF[i].MoneySUN) });
+
+                        dataTable.Rows.Add(new string[] { "14", "Tiền làm thêm giờ (Khoa DDLS&TC) ", (listDataPDF[i].OvertimePay == "" || listDataPDF[i].OvertimePay == "0") ? "" : string.Format("{0:n0}", listDataPDF[i].OvertimePay) });
+
+                        dataTable.Rows.Add(new string[] { "15", "Mổ yêu cầu ", (listDataPDF[i].RequestSurgery == "" || listDataPDF[i].RequestSurgery == "0") ? "" : string.Format("{0:n0}", listDataPDF[i].RequestSurgery) });
+
+                        dataTable.Rows.Add(new string[] { "16", "DV 24/7 ", (listDataPDF[i].Dv247 == "" || listDataPDF[i].Dv247 == "0") ? "" : string.Format("{0:n0}", listDataPDF[i].Dv247) });
+
+                        dataTable.Rows.Add(new string[] { "17", "Kỹ thuật dịch vụ mổ tự nguyện ", (listDataPDF[i].VoluntarySurgery == "" || listDataPDF[i].VoluntarySurgery == "0") ? "" : string.Format("{0:n0}", listDataPDF[i].VoluntarySurgery) });
+
+                        dataTable.Rows.Add(new string[] { "18", "DV giảm đau sau mổ ", (listDataPDF[i].DvSurgeryPainRelief == "" || listDataPDF[i].DvSurgeryPainRelief == "0") ? "" : string.Format("{0:n0}", listDataPDF[i].DvSurgeryPainRelief) });
+
+                        dataTable.Rows.Add(new string[] { "19", "PC điện thoại", (listDataPDF[i].PCDT == "" || listDataPDF[i].PCDT == "0") ? "" : string.Format("{0:n0}", listDataPDF[i].PCDT) });
+
+                        dataTable.Rows.Add(new string[] { "20", "Các loại PC khác  (xăng xe, công tác phí) ", (listDataPDF[i].PCK == "" || listDataPDF[i].PCK == "0") ? "" : string.Format("{0:n0}", listDataPDF[i].PCK) });
+
+                        dataTable.Rows.Add(new string[] { "21", "Tổng thu nhập", (listDataPDF[i].TotalIncome == "" || listDataPDF[i].TotalIncome == "0") ? "" : string.Format("{0:n0}", listDataPDF[i].TotalIncome) });
+
+                        dataTable.Rows.Add(new string[] { "22", "Chênh lệch tiền ăn tính thuế (*)", (listDataPDF[i].CLTATT == "" || listDataPDF[i].CLTATT == "0") ? "" : string.Format("{0:n0}", listDataPDF[i].CLTATT) });
+
+                        dataTable.Rows.Add(new string[] { "23", "Phụ cấp ưu đãi nghề", (listDataPDF[i].PCUDN == "" || listDataPDF[i].PCUDN == "0") ? "" : string.Format("{0:n0}", listDataPDF[i].PCUDN) });
+
+                        dataTable.Rows.Add(new string[] { "24", "PC độc hại, PC khu vực", (listDataPDF[i].PCDH == "" || listDataPDF[i].PCDH == "0") ? "" : string.Format("{0:n0}", listDataPDF[i].PCDH) });
+
+                        dataTable.Rows.Add(new string[] { "25", "Tổng thu nhập chịu thuế (21)-(3)+(22)-(23)-(24)", (listDataPDF[i].TotalTaxableIncome == "" || listDataPDF[i].TotalTaxableIncome == "0") ? "" : string.Format("{0:n0}", listDataPDF[i].TotalTaxableIncome) });
+
                         //Set the datatable as the data source of table
                         table.DataSource = dataTable;
 
@@ -127,10 +187,14 @@ namespace SendMailPDF.Services
                         {
                             table.Columns[a].StringFormat = new PdfStringFormat(PdfTextAlignment.Center, PdfVerticalAlignment.Middle);
                         }
+                        table.Columns[0].Width = 3;
+                        table.Columns[1].Width = 20;
+                        table.Columns[2].Width = 5;
                         //Register with BeginRowLayout event
                         table.BeginRowLayout += Table_BeginRowLayout;
                         //Draw table on the page
                         table.Draw(page, new PointF(0, 30));
+
 
                         doc.SaveToFile(filepath);
                         filePDFs = File.ReadAllBytes(filepath);
@@ -142,7 +206,7 @@ namespace SendMailPDF.Services
                         //Attachment data = attachment;
                         var AddressEmailTo = listDataPDF[i].EmailAddress;
                         MailMessage mailMessage = new MailMessage();
-                        mailMessage.Attachments.Add(new Attachment(new MemoryStream(filePDFs), "test.pdf", "application/pdf"));
+                        mailMessage.Attachments.Add(new Attachment(new MemoryStream(filePDFs), "Thông báo các khoản thu nhập chịu thuế tháng " + month + "/" + year + ".pdf", "application/pdf"));
                         mailMessage.Subject = dataSendMailPDF.Subject;
                         mailMessage.Body = dataSendMailPDF.Body;
                         mailMessage.From = new MailAddress(_configuration.GetSection("EmailUsername").Value);
@@ -154,7 +218,7 @@ namespace SendMailPDF.Services
                 #endregion
                 return Task.FromResult(true);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return Task.FromResult(false);
                 throw;
