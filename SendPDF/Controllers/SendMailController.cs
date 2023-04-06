@@ -56,6 +56,10 @@ namespace SendMailPDF.Controllers
         {
             try
             {
+                if (HttpContext.Items["UserInfo"] is not CurrentUserModel _userInfo)
+                {
+                    return ResUnAuthorized.Unauthor();
+                }
                 var sendMailRs = await _sendMailService.SendMailAsync(emailDto);
                 if (sendMailRs == true)
                 {

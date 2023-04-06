@@ -48,6 +48,11 @@ namespace SendMailPDF.Data
         [JsonPropertyName("email")]
         public string? Email { get; set; }
 
+        [JsonPropertyName("email_password")]
+        [Column(TypeName = "nvarchar")]
+        [StringLength(30)]
+        public string? EmailPassword { get; set; }
+
         [Column("password")]
         [JsonPropertyName("password")]
         public string Password { get; set; }

@@ -23,6 +23,7 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
                     <a class="dropdown-item" href="javascript:void(0)" onclick="openModal()"><i class="fa fa-pencil-square"></i>Thay đổi mật khẩu</a>
+                    <a class="dropdown-item" href="javascript:void(0)" onclick="openModalUpdate()"><i class="fa fa-info"></i>Cập nhật thông tin</a>
                     <a class="dropdown-item" href="javascript:void(0)" onclick="logout()"><i class="dw dw-logout"></i>Thoát</a>
                 </div>
             </div>
@@ -69,6 +70,47 @@
             </div>
             <div class="modal-footer">
                 <a href="javascript:void(0);" class="btn btn-info" onclick="SaveClick(@currentuser.Id)">Lưu</a>
+                <a href="javascript:void(0);" class="btn btn-secondary" data-dismiss="modal">Trở lại</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal hide fade" id="modalEditInformation" role="dialog" aria-labelledby="modalEditInformationLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalEditInformation">Cập nhật thông tin</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="formEditInformation" class="form-valide" action="#" method="post" style="margin-top: 20px;">
+                    <input type="hidden" id="Id" name="Id" value="0" />
+                    <div class="form-group row">
+                        <label for="EmailAddress" class="col-sm-3 col-form-label">Địa chỉ Email<span class="text-danger">*</span></label>
+                        <div class="col-sm-9">
+                            <input type="email" class="form-control required" id="EmailAddressInstruct" aria-label="EmailAddressInstruct" aria-describedby="basic-addon1">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="EmailPassword" class="col-sm-3 col-form-label">Mật khẩu<span class="text-danger">*</span></label>
+                        <div class="col-sm-9">
+                            <input type="password" class="form-control required" id="EmailPassword" aria-label="EmailPassword" aria-describedby="basic-addon1" onkeypress='validateSLEdit(event)'>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="Instruct" class="col-sm-5 col-form-label">Hướng dẫn lấy mật khẩu:</label>
+                        <div class="col-sm-7 col-form-label">
+                            <a href="javascript:void(0);" onclick="openViewIndex(4)" class="dropdown-toggle no-arrow follow">
+                                <span class="fa fa-eye"></span><span class="mtext">Instruct</span>
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0);" class="btn btn-info" onclick="Save(@currentuser.Id)">Lưu</a>
                 <a href="javascript:void(0);" class="btn btn-secondary" data-dismiss="modal">Trở lại</a>
             </div>
         </div>
@@ -135,5 +177,9 @@
         clearMsgInvalid();
         $('#PrivateKey').val("");
         $('#AddressWallet').val("");
+    }
+    function openModalUpdate(){
+        $('#modalEditInformation').modal('show');
+        clearMsgInvalid();
     }
 </script>

@@ -17,47 +17,41 @@ namespace SendMailPDF.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.3")
+                .HasAnnotation("ProductVersion", "6.0.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
             modelBuilder.Entity("SendMailPDF.Data.DataEmail", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id")
-                        .HasAnnotation("Relational:JsonPropertyName", "id");
+                        .HasColumnName("id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Body")
                         .HasMaxLength(3000)
                         .HasColumnType("nvarchar(3000)")
-                        .HasColumnName("body")
-                        .HasAnnotation("Relational:JsonPropertyName", "body");
+                        .HasColumnName("body");
 
                     b.Property<int>("CheckAuto")
                         .HasColumnType("int")
-                        .HasColumnName("check_auto")
-                        .HasAnnotation("Relational:JsonPropertyName", "check_auto");
+                        .HasColumnName("check_auto");
 
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime2")
-                        .HasColumnName("created_at")
-                        .HasAnnotation("Relational:JsonPropertyName", "created_at");
+                        .HasColumnName("created_at");
 
                     b.Property<int?>("CreatedBy")
                         .HasColumnType("int")
-                        .HasColumnName("created_by")
-                        .HasAnnotation("Relational:JsonPropertyName", "created_by");
+                        .HasColumnName("created_by");
 
                     b.Property<string>("Subject")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)")
-                        .HasColumnName("subject")
-                        .HasAnnotation("Relational:JsonPropertyName", "subject");
+                        .HasColumnName("subject");
 
                     b.HasKey("Id");
 
@@ -69,40 +63,33 @@ namespace SendMailPDF.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id")
-                        .HasAnnotation("Relational:JsonPropertyName", "id");
+                        .HasColumnName("id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("CC")
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnName("cc")
-                        .HasAnnotation("Relational:JsonPropertyName", "cc");
+                        .HasColumnName("cc");
 
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime2")
-                        .HasColumnName("created_at")
-                        .HasAnnotation("Relational:JsonPropertyName", "created_at");
+                        .HasColumnName("created_at");
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2")
-                        .HasColumnName("deleted_at")
-                        .HasAnnotation("Relational:JsonPropertyName", "deleted_at");
+                        .HasColumnName("deleted_at");
 
                     b.Property<int?>("DeletedBy")
                         .HasColumnType("int")
-                        .HasColumnName("deleted_by")
-                        .HasAnnotation("Relational:JsonPropertyName", "deleted_by");
+                        .HasColumnName("deleted_by");
 
                     b.Property<string>("EmailAddress")
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnName("email_address")
-                        .HasAnnotation("Relational:JsonPropertyName", "email_address");
+                        .HasColumnName("email_address");
 
                     b.Property<int?>("IsDeleted")
                         .HasColumnType("int")
-                        .HasColumnName("is_deleted")
-                        .HasAnnotation("Relational:JsonPropertyName", "is_deleted");
+                        .HasColumnName("is_deleted");
 
                     b.HasKey("Id");
 
@@ -114,62 +101,51 @@ namespace SendMailPDF.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id")
-                        .HasAnnotation("Relational:JsonPropertyName", "id");
+                        .HasColumnName("id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime2")
-                        .HasColumnName("created_at")
-                        .HasAnnotation("Relational:JsonPropertyName", "created_at");
+                        .HasColumnName("created_at");
 
                     b.Property<int?>("CreatedBy")
                         .HasColumnType("int")
-                        .HasColumnName("created_by")
-                        .HasAnnotation("Relational:JsonPropertyName", "created_by");
+                        .HasColumnName("created_by");
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2")
-                        .HasColumnName("deleted_at")
-                        .HasAnnotation("Relational:JsonPropertyName", "deleted_at");
+                        .HasColumnName("deleted_at");
 
                     b.Property<int?>("DeletedBy")
                         .HasColumnType("int")
-                        .HasColumnName("deleted_by")
-                        .HasAnnotation("Relational:JsonPropertyName", "deleted_by");
+                        .HasColumnName("deleted_by");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnName("description")
-                        .HasAnnotation("Relational:JsonPropertyName", "description");
+                        .HasColumnName("description");
 
                     b.Property<bool?>("IsActive")
                         .HasColumnType("bit")
-                        .HasColumnName("is_active")
-                        .HasAnnotation("Relational:JsonPropertyName", "is_active");
+                        .HasColumnName("is_active");
 
                     b.Property<bool?>("IsDeleted")
                         .HasColumnType("bit")
-                        .HasColumnName("is_deleted")
-                        .HasAnnotation("Relational:JsonPropertyName", "is_deleted");
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("datetime2")
-                        .HasColumnName("modified_at")
-                        .HasAnnotation("Relational:JsonPropertyName", "modified_at");
+                        .HasColumnName("modified_at");
 
                     b.Property<int?>("ModifiedBy")
                         .HasColumnType("int")
-                        .HasColumnName("modified_by")
-                        .HasAnnotation("Relational:JsonPropertyName", "modified_by");
+                        .HasColumnName("modified_by");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnName("name")
-                        .HasAnnotation("Relational:JsonPropertyName", "name");
+                        .HasColumnName("name");
 
                     b.HasKey("Id");
 
@@ -181,97 +157,83 @@ namespace SendMailPDF.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id")
-                        .HasAnnotation("Relational:JsonPropertyName", "id");
+                        .HasColumnName("id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime2")
-                        .HasColumnName("created_at")
-                        .HasAnnotation("Relational:JsonPropertyName", "created_at");
+                        .HasColumnName("created_at");
 
                     b.Property<int?>("CreatedBy")
                         .HasColumnType("int")
-                        .HasColumnName("created_by")
-                        .HasAnnotation("Relational:JsonPropertyName", "created_by");
+                        .HasColumnName("created_by");
 
                     b.Property<DateTime?>("DateOfJoining")
                         .HasColumnType("datetime2")
-                        .HasColumnName("date_of_joining")
-                        .HasAnnotation("Relational:JsonPropertyName", "date_of_joining");
+                        .HasColumnName("date_of_joining");
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2")
-                        .HasColumnName("deleted_at")
-                        .HasAnnotation("Relational:JsonPropertyName", "deleted_at");
+                        .HasColumnName("deleted_at");
 
                     b.Property<int?>("DeletedBy")
                         .HasColumnType("int")
-                        .HasColumnName("deleted_by")
-                        .HasAnnotation("Relational:JsonPropertyName", "deleted_by");
+                        .HasColumnName("deleted_by");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnName("email")
-                        .HasAnnotation("Relational:JsonPropertyName", "email");
+                        .HasColumnName("email");
+
+                    b.Property<string>("EmailPassword")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<DateTime?>("ExpirationDateOtp")
                         .HasColumnType("datetime2")
-                        .HasColumnName("expiration_date_otp")
-                        .HasAnnotation("Relational:JsonPropertyName", "expiration_date_otp");
+                        .HasColumnName("expiration_date_otp");
 
                     b.Property<string>("FullName")
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnName("full_name")
-                        .HasAnnotation("Relational:JsonPropertyName", "full_name");
+                        .HasColumnName("full_name");
 
                     b.Property<int>("IsActive")
                         .HasColumnType("int")
-                        .HasColumnName("is_active")
-                        .HasAnnotation("Relational:JsonPropertyName", "is_active");
+                        .HasColumnName("is_active");
 
                     b.Property<int?>("IsDeleted")
                         .HasColumnType("int")
-                        .HasColumnName("is_deleted")
-                        .HasAnnotation("Relational:JsonPropertyName", "is_deleted");
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("datetime2")
-                        .HasColumnName("modified_at")
-                        .HasAnnotation("Relational:JsonPropertyName", "modified_at");
+                        .HasColumnName("modified_at");
 
                     b.Property<int?>("ModifiedBy")
                         .HasColumnType("int")
-                        .HasColumnName("modified_by")
-                        .HasAnnotation("Relational:JsonPropertyName", "modified_by");
+                        .HasColumnName("modified_by");
 
                     b.Property<int?>("OTP")
                         .HasColumnType("int")
-                        .HasColumnName("otp")
-                        .HasAnnotation("Relational:JsonPropertyName", "otp");
+                        .HasColumnName("otp");
 
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnName("password")
-                        .HasAnnotation("Relational:JsonPropertyName", "password");
+                        .HasColumnName("password");
 
                     b.Property<int?>("RoleId")
                         .HasColumnType("int")
-                        .HasColumnName("role_id")
-                        .HasAnnotation("Relational:JsonPropertyName", "role_id");
+                        .HasColumnName("role_id");
 
                     b.Property<string>("SaltKey")
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnName("salt")
-                        .HasAnnotation("Relational:JsonPropertyName", "salt");
+                        .HasColumnName("salt");
 
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnName("user_name")
-                        .HasAnnotation("Relational:JsonPropertyName", "user_name");
+                        .HasColumnName("user_name");
 
                     b.HasKey("Id");
 
@@ -283,18 +245,15 @@ namespace SendMailPDF.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id")
-                        .HasAnnotation("Relational:JsonPropertyName", "id");
+                        .HasColumnName("id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int?>("roles_id")
-                        .HasColumnType("int")
-                        .HasAnnotation("Relational:JsonPropertyName", "roles_id");
+                        .HasColumnType("int");
 
                     b.Property<int?>("users_id")
-                        .HasColumnType("int")
-                        .HasAnnotation("Relational:JsonPropertyName", "users_id");
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
