@@ -28,6 +28,7 @@ namespace SendMailPDF.Models
         public string? UserName { get; set; }
         public int IsActive { get; set; }
         public string? Email { get; set; }
+        public string? EmailPassword { get; set; }
         public int? RoleId { get; set; }
     }
     public class CreateModel
@@ -131,5 +132,19 @@ namespace SendMailPDF.Models
         public int Id { get; set; }
         public string PassWordNew { get; set; }
         public string SaltKey { get; set; }
+    }
+    public class EditInformationModel
+    {
+        public int Id { get; set; }
+        public string EmailAddressInstruct { get; set; }
+        public string EmailPassword { get; set; }
+    }
+    public class UserEditInformationModel
+    {
+        public int Id { get; set; }
+        public string Email { get; set; }
+        public string EmailPassword { get; set; }
+        public int ModifiedBy { get; set; }
+
     }
 }

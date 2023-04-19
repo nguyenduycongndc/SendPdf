@@ -184,6 +184,7 @@ namespace SendMailPDF.Services
                         FullName = rs[0].FullName,
                         IsActive = rs[0].IsActive,
                         Email = rs[0].Email,
+                        EmailPassword = rs[0].EmailPassword,
                         RoleId = rs[0].RoleId,
                     };
 
@@ -352,6 +353,62 @@ namespace SendMailPDF.Services
                     SaltKey = salt,
                 };
                 var rs = await userRepo.ChangePassWordRepo(us);
+                Result = new ResultModel()
+                {
+                    Data = rs,
+                    Message = (rs == true ? "OK" : "Bad Request"),
+                    Code = (rs == true ? 200 : 400),
+                };
+                return Result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return Result;
+            }
+        }
+        #endregion
+        #region EditInformation
+
+        public async Task<ResultModel> EditInformationUser(EditInformationModel editInformationModel, CurrentUserModel _userInfo)
+        {
+            try
+            {
+                var checkEmailUser = new List<Users>();
+                var checkUser = userRepo.GetDetail(editInformationModel.Id);
+                if (string.IsNullOrEmpty(editInformationModel.EmailAddressInstruct) && editInformationModel.EmailAddressInstruct != checkUser[0].Email)
+                {
+                    checkEmailUser = userRepo.CheckEmailUser(editInformationModel.EmailAddressInstruct);
+                    if (checkEmailUser.Count() != 0)
+                    {
+                        _logger.LogError("Email này đã được sử dụng");
+                        Result = new ResultModel()
+                        {
+                            Message = "Not Found",
+                            Code = 404,
+                        };
+                        return Result;
+                    }
+                }
+                if (checkUser.Count() == 0)
+                {
+                    _logger.LogError("Tài khoản không tồn tại");
+                    Result = new ResultModel()
+                    {
+                        Message = "Not Found",
+                        Code = 404,
+                    };
+                    return Result;
+                }
+
+                UserEditInformationModel us = new UserEditInformationModel()
+                {
+                    Id = editInformationModel.Id,
+                    Email = editInformationModel.EmailAddressInstruct,
+                    EmailPassword = editInformationModel.EmailPassword,
+                    ModifiedBy = _userInfo.Id,
+                };
+                var rs = await userRepo.EditInformationUs(us);
                 Result = new ResultModel()
                 {
                     Data = rs,

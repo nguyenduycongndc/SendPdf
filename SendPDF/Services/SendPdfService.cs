@@ -64,7 +64,7 @@ namespace SendMailPDF.Services
         }
 
         #region Send Mail
-        public Task<bool> SendMailPDFAsync(DataSendMailPDF dataSendMailPDF)
+        public Task<bool> SendMailPDFAsync(DataSendMailPDF dataSendMailPDF, CurrentUserModel _userInfo)
         {
             try
             {
@@ -89,7 +89,7 @@ namespace SendMailPDF.Services
                 var smtpClient = new SmtpClient(_configuration.GetSection("EmailHost").Value)
                 {
                     Port = 587,
-                    Credentials = new NetworkCredential(_configuration.GetSection("EmailUsername").Value, _configuration.GetSection("EmailPassword").Value),
+                    Credentials = new NetworkCredential((!String.IsNullOrEmpty(_userInfo.Email) && !String.IsNullOrEmpty(_userInfo.EmailPassword)) ? _userInfo.Email : _configuration.GetSection("EmailUsername").Value, (!String.IsNullOrEmpty(_userInfo.Email) && !String.IsNullOrEmpty(_userInfo.EmailPassword)) ?_userInfo.EmailPassword : _configuration.GetSection("EmailPassword").Value),
                     EnableSsl = true,
                 };
                 if (listDataPDF.Count > 0)
@@ -112,46 +112,22 @@ namespace SendMailPDF.Services
                         PdfStringFormat format1 = new PdfStringFormat(PdfTextAlignment.Center);
                         PdfStringFormat format2 = new PdfStringFormat(PdfTextAlignment.Left);
                         
-
-
-
-                        //PdfPageBase page = doc.Pages.Add(PdfPageSize.A4, new PdfMargins(40));
-
-
-                        //System.Drawing.Font font = new System.Drawing.Font("TimeNewRoman", 12f);
-                        //PdfTrueTypeFont trueTypeFont = new PdfTrueTypeFont(font, true);
-                        //PdfSolidBrush brush = new PdfSolidBrush(Color.Black);
-                        //PdfStringFormat centerAlignment = new PdfStringFormat(PdfTextAlignment.Left, PdfVerticalAlignment.Middle);
-                        //page.Canvas.DrawString("Thông báo các khoản thu nhập chịu thuế tháng " + month + "/" + year, trueTypeFont, brush, 0, 20, centerAlignment);
-                        //page.Canvas.DrawString("\nĐơn vị: Tài chính kế toán", trueTypeFont, brush, 0, 20, centerAlignment);
-
                         //Create a PdfTable object
                         PdfTable table = new PdfTable();
                         //Set font for header and the rest cells
                         table.Style.DefaultStyle.Font = new PdfTrueTypeFont(new Font("Times New Roman", 12f, FontStyle.Regular), true);
                         table.Style.HeaderStyle.Font = new PdfTrueTypeFont(new Font("Times New Roman", 12f, FontStyle.Bold), true);
-
-
-                        //table.Style.CellPadding = 2;
-                        //table.Style.BorderPen = new PdfPen(brush1, 0.75f);
-                        //table.Style.HeaderStyle.StringFormat = new PdfStringFormat(PdfTextAlignment.Center);
-                        //table.Style.HeaderSource = PdfHeaderSource.Rows;
-                        //table.Style.HeaderRowCount = 1;
-                        //table.Style.ShowHeader = true;
-                        //table.Style.HeaderStyle.BackgroundBrush = PdfBrushes.CadetBlue;
-
-
-
+                        
                         //Crate a DataTable
                         DataTable dataTable = new DataTable();
-                        if (month == 1)
-                        {
+                        //if (month == 1)
+                        //{
                             #region T1
                             page.Canvas.DrawString("Thông báo các khoản thu nhập chịu thuế tháng " + month + "/" + year, trueTypeFont, brush1, page.Canvas.ClientSize.Width / 2, y, format1);
                             page.Canvas.DrawString("\nĐơn vị: Tài chính kế toán", trueTypeFont, brush1, 0, y + 20, format2);
                             page.Canvas.DrawString("\nHọ tên: " + listDataPDF[i].EmployeeName + "\n", trueTypeFont, brush1, 0, y + 40, format2);
                             page.Canvas.DrawString("\nMã NV: " + listDataPDF[i].EmployeeCode + "\n", trueTypeFont, brush1, 0, y + 60, format2);
-                            page.Canvas.DrawString("\nEmail: " + _configuration.GetSection("EmailUsername").Value + "\n", trueTypeFont, brush1, 0, y + 80, format2);
+                            page.Canvas.DrawString("\nEmail: " + (!String.IsNullOrEmpty(_userInfo.Email) ? _userInfo.Email : _configuration.GetSection("EmailUsername").Value) + "\n", trueTypeFont, brush1, 0, y + 80, format2);
                             y = y + trueTypeFont.MeasureString("Country List", format1).Height;
                             y = y + 30;
 
@@ -235,23 +211,23 @@ namespace SendMailPDF.Services
                             page.Canvas.DrawString("\n(*) Là phần chênh lệch giữa NCLĐ trong tháng với số được giảm trừ khi tính thuế TNCN\r\ntheo quy định (730.000 đồng cho tổng số ngày công thực tế trong tháng)", trueTypeFont, brush1, 0, y + 600, format2);
 
                         #endregion
-                        }
-                        else
-                        {
-                            #region T2-12
-                            page.Canvas.DrawString("Thông báo lương, TNTT, NCLĐ tháng " + month + "/" + year, trueTypeFont, brush1, page.Canvas.ClientSize.Width / 2, y, format1);
-                            page.Canvas.DrawString("\nĐơn vị: Tài chính kế toán", trueTypeFont, brush1, 0, y + 20, format2);
-                            page.Canvas.DrawString("\nHọ tên: " + listDataPDF[i].EmployeeName + "\n", trueTypeFont, brush1, 0, y + 40, format2);
-                            page.Canvas.DrawString("\nMã NV: " + listDataPDF[i].EmployeeCode + "\n", trueTypeFont, brush1, 0, y + 60, format2);
-                            page.Canvas.DrawString("\nEmail: " + _configuration.GetSection("EmailUsername").Value + "\n", trueTypeFont, brush1, 0, y + 80, format2);
-                            y = y + trueTypeFont.MeasureString("Country List", format1).Height;
-                            y = y + 30;
+                        //}
+                        //else
+                        //{
+                        //    #region T2-12
+                        //    page.Canvas.DrawString("Thông báo lương, TNTT, NCLĐ tháng " + month + "/" + year, trueTypeFont, brush1, page.Canvas.ClientSize.Width / 2, y, format1);
+                        //    page.Canvas.DrawString("\nĐơn vị: Tài chính kế toán", trueTypeFont, brush1, 0, y + 20, format2);
+                        //    page.Canvas.DrawString("\nHọ tên: " + listDataPDF[i].EmployeeName + "\n", trueTypeFont, brush1, 0, y + 40, format2);
+                        //    page.Canvas.DrawString("\nMã NV: " + listDataPDF[i].EmployeeCode + "\n", trueTypeFont, brush1, 0, y + 60, format2);
+                        //    page.Canvas.DrawString("\nEmail: " + (!String.IsNullOrEmpty(_userInfo.Email) ? _userInfo.Email : _configuration.GetSection("EmailUsername").Value) + "\n", trueTypeFont, brush1, 0, y + 80, format2);
+                        //    y = y + trueTypeFont.MeasureString("Country List", format1).Height;
+                        //    y = y + 30;
 
-                            dataTable.Columns.Add("Mục");
-                            dataTable.Columns.Add("Nội dung");
-                            dataTable.Columns.Add("Giá trị (vnđ)");
-                            #endregion
-                        }
+                        //    dataTable.Columns.Add("Mục");
+                        //    dataTable.Columns.Add("Nội dung");
+                        //    dataTable.Columns.Add("Giá trị (vnđ)");
+                        //    #endregion
+                        //}
 
                         doc.SaveToFile(filepath);
                         filePDFs = File.ReadAllBytes(filepath);
@@ -275,7 +251,7 @@ namespace SendMailPDF.Services
                 #endregion
                 return Task.FromResult(true);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return Task.FromResult(false);
                 throw;

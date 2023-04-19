@@ -238,5 +238,28 @@ namespace SendMailPDF.Controllers
                 return data;
             }
         }
+        [HttpPut]
+        [Route("EditInformation")]
+        public async Task<ResultModel> EditInformation(EditInformationModel editInformationModel)
+        {
+            try
+            {
+                if (HttpContext.Items["UserInfo"] is not CurrentUserModel _userInfo)
+                {
+                    return ResUnAuthorized.Unauthor();
+                }
+                return await _userService.EditInformationUser(editInformationModel, _userInfo);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                var data = new ResultModel()
+                {
+                    Message = "Not Found",
+                    Code = 404,
+                };
+                return data;
+            }
+        }
     }
 }

@@ -23,7 +23,7 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
                     <a class="dropdown-item" href="javascript:void(0)" onclick="openModal()"><i class="fa fa-pencil-square"></i>Thay đổi mật khẩu</a>
-                    <a class="dropdown-item" href="javascript:void(0)" onclick="openModalUpdate()"><i class="fa fa-info"></i>Cập nhật thông tin</a>
+                    <a class="dropdown-item" href="javascript:void(0)" onclick="openModalUpdate(@currentuser.Id)"><i class="fa fa-info"></i>Cập nhật thông tin</a>
                     <a class="dropdown-item" href="javascript:void(0)" onclick="logout()"><i class="dw dw-logout"></i>Thoát</a>
                 </div>
             </div>
@@ -178,8 +178,45 @@
         $('#PrivateKey').val("");
         $('#AddressWallet').val("");
     }
-    function openModalUpdate(){
+    function openModalUpdate() {
         $('#modalEditInformation').modal('show');
+        callApi_userservice(
+            apiConfig.api.user.controller,
+            apiConfig.api.user.action.getItem.path + "?id=" + @currentuser.Id,
+            apiConfig.api.user.action.getItem.method,
+            null, "fnGetDetailSuccess", 'msgError');
         clearMsgInvalid();
+    }
+
+    function fnGetDetailSuccess(rspn) {
+        var frmModify = $("#formEditInformation");
+        if (rspn !== undefined && rspn !== null) {
+            frmModify.find("#Id").val(rspn.data.id);
+            frmModify.find("#EmailAddressInstruct").val(rspn.data.email);
+            frmModify.find("#EmailPassword").val(rspn.data.emailPassword);
+        }
+    }
+    function Save() {
+        var obj = {
+            'Id': @currentuser.Id,
+            'EmailAddressInstruct': $('#EmailAddressInstruct').val().trim(),
+            'EmailPassword': $('#EmailPassword').val().trim(),
+        }
+        if (validateRequired('#formEditInformation')) {
+            callApi_userservice(
+                apiConfig.api.user.controller,
+                apiConfig.api.user.action.editinformation.path,
+                apiConfig.api.user.action.editinformation.method,
+                obj, 'EditInformationSuccess', 'msgError');
+        }
+    }
+    function EditInformationSuccess(data) {
+        if (data != false) {
+            toastr.success("Thay đổi thông tin thành công");
+            $('#modalEditInformation').modal('hide');
+        }
+        else {
+            toastr.error("Thay đổi thông tin thất bại");
+        }
     }
 </script>

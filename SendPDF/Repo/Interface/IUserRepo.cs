@@ -20,6 +20,8 @@ namespace SendMailPDF.Repo.Interface
         Task<bool> DeleteUs(int id, CurrentUserModel _userInfo);
         Task<bool> ForgotPassWordUs(ChangePassWordModel changePassWordModel);
         Task<bool> ChangePassWordRepo(ChangePassWordLoginSuccessModel changePassWordLoginSuccessModel);
+        Task<bool> EditInformationUs(UserEditInformationModel user);
+
 
         //public Users GetDetail(int id);
         //Users GetDetailByName(InputLoginModel inputModel);

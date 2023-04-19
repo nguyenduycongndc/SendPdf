@@ -287,5 +287,29 @@ namespace SendMailPDF.Repo
             return true;
         }
         #endregion
+        #region EditInformation
+        public async Task<bool> EditInformationUs(UserEditInformationModel user)
+        {
+            try
+            {
+                string sql = "EXECUTE SP_EDIT_INFORMATION_USER @id, @email, @email_password, @modified_by";
+
+                List<SqlParameter> parms = new List<SqlParameter>
+                {
+                    new SqlParameter { ParameterName = "@id", Value = user.Id },
+                    new SqlParameter { ParameterName = "@email", Value = user.Email },
+                    new SqlParameter { ParameterName = "@email_password", Value = user.EmailPassword },
+                    new SqlParameter { ParameterName = "@modified_by", Value = user.ModifiedBy },
+                };
+
+                var dt = await context.Database.ExecuteSqlRawAsync(sql, parms.ToArray());
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion
     }
 }

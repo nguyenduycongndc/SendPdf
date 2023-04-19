@@ -141,7 +141,7 @@ namespace SendMailPDF.Controllers
                 {
                     return ResUnAuthorized.Unauthor();
                 }
-                var sendMailRs = await _sendPdfService.SendMailPDFAsync(dataSendMailPDF);
+                var sendMailRs = await _sendPdfService.SendMailPDFAsync(dataSendMailPDF, _userInfo);
                 if (sendMailRs == true)
                 {
                     var data = new ResultModel()
